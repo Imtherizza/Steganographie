@@ -3,7 +3,7 @@
 
 # Relative path conversion top directories.
 set(CMAKE_RELATIVE_PATH_TOP_SOURCE "/Users/eric/Documents/steno/Steganographie")
-set(CMAKE_RELATIVE_PATH_TOP_BINARY "/Users/eric/Documents/steno/Steganographie/Release")
+set(CMAKE_RELATIVE_PATH_TOP_BINARY "/Users/eric/Documents/steno/Steganographie/Release/MACOSX")
 
 # Force unix paths in dependencies.
 set(CMAKE_FORCE_UNIX_PATHS 1)

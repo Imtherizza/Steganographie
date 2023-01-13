@@ -57,7 +57,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = /Users/eric/Documents/steno/Steganographie
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/eric/Documents/steno/Steganographie/Release
+CMAKE_BINARY_DIR = /Users/eric/Documents/steno/Steganographie/Release/MACOSX
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -81,14 +81,14 @@ clean: CMakeFiles/stegano.dir/clean
 CMakeFiles/stegano.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/stegano.dir/build.make CMakeFiles/stegano.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/stegano.dir/build.make CMakeFiles/stegano.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/eric/Documents/steno/Steganographie/Release/CMakeFiles --progress-num=1,2 "Built target stegano"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/eric/Documents/steno/Steganographie/Release/MACOSX/CMakeFiles --progress-num=1,2 "Built target stegano"
 .PHONY : CMakeFiles/stegano.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/stegano.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/eric/Documents/steno/Steganographie/Release/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/eric/Documents/steno/Steganographie/Release/MACOSX/CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/stegano.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/eric/Documents/steno/Steganographie/Release/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/eric/Documents/steno/Steganographie/Release/MACOSX/CMakeFiles 0
 .PHONY : CMakeFiles/stegano.dir/rule
 
 # Convenience name for target.
