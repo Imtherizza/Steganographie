@@ -57,10 +57,10 @@ RM = /opt/homebrew/Cellar/cmake/3.25.1/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/eric/Documents/steno/Stenographie
+CMAKE_SOURCE_DIR = /Users/eric/Documents/steno/Steganographie
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/eric/Documents/steno/Stenographie/Release
+CMAKE_BINARY_DIR = /Users/eric/Documents/steno/Steganographie/Release
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/eric/Documents/steno/Stenographie/Release/CMakeFiles /Users/eric/Documents/steno/Stenographie/Release//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/eric/Documents/steno/Steganographie/Release/CMakeFiles /Users/eric/Documents/steno/Steganographie/Release//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/eric/Documents/steno/Stenographie/Release/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/eric/Documents/steno/Steganographie/Release/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named steno
+# Target rules for targets named stegano
 
 # Build rule for target.
-steno: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 steno
-.PHONY : steno
+stegano: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 stegano
+.PHONY : stegano
 
 # fast build rule for target.
-steno/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/steno.dir/build.make CMakeFiles/steno.dir/build
-.PHONY : steno/fast
+stegano/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stegano.dir/build.make CMakeFiles/stegano.dir/build
+.PHONY : stegano/fast
 
 main.o: main.c.o
 .PHONY : main.o
 
 # target to build an object file
 main.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/steno.dir/build.make CMakeFiles/steno.dir/main.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stegano.dir/build.make CMakeFiles/stegano.dir/main.c.o
 .PHONY : main.c.o
 
 main.i: main.c.i
@@ -142,7 +142,7 @@ main.i: main.c.i
 
 # target to preprocess a source file
 main.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/steno.dir/build.make CMakeFiles/steno.dir/main.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stegano.dir/build.make CMakeFiles/stegano.dir/main.c.i
 .PHONY : main.c.i
 
 main.s: main.c.s
@@ -150,7 +150,7 @@ main.s: main.c.s
 
 # target to generate assembly for a file
 main.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/steno.dir/build.make CMakeFiles/steno.dir/main.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stegano.dir/build.make CMakeFiles/stegano.dir/main.c.s
 .PHONY : main.c.s
 
 # Help Target
@@ -161,7 +161,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... steno"
+	@echo "... stegano"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

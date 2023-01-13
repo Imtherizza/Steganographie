@@ -7,6 +7,9 @@
 //main program
 int main(int argc,char **argv)
 {
-    //aaaaaaa
+    //main code
+    printf("Hello World!\n");
+
+    //end of main
     return 0;
 }

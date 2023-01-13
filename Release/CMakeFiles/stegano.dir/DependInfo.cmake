@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/eric/Documents/steno/Stenographie/main.c" "CMakeFiles/steno.dir/main.c.o" "gcc" "CMakeFiles/steno.dir/main.c.o.d"
+  "/Users/eric/Documents/steno/Steganographie/main.c" "CMakeFiles/stegano.dir/main.c.o" "gcc" "CMakeFiles/stegano.dir/main.c.o.d"
   )
 
 # Targets to which this target links.

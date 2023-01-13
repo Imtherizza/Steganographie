@@ -1,4 +1,4 @@
 cmake_minimum_required(VERSION 3.10)
-project(steno)
+project(Steganographie)
 
-add_executable(steno main.c)
+add_executable(stegano main.c)

@@ -1,5 +1,5 @@
-CMakeFiles/steno.dir/main.c.o: \
-  /Users/eric/Documents/steno/Stenographie/main.c \
+CMakeFiles/stegano.dir/main.c.o: \
+  /Users/eric/Documents/steno/Steganographie/main.c \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.1.6/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include/stdlib.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/include/Availability.h \

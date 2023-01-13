@@ -54,16 +54,16 @@ RM = /opt/homebrew/Cellar/cmake/3.25.1/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/eric/Documents/steno/Stenographie
+CMAKE_SOURCE_DIR = /Users/eric/Documents/steno/Steganographie
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/eric/Documents/steno/Stenographie/Release
+CMAKE_BINARY_DIR = /Users/eric/Documents/steno/Steganographie/Release
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/steno.dir/all
+all: CMakeFiles/stegano.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +71,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/steno.dir/clean
+clean: CMakeFiles/stegano.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/steno.dir
+# Target rules for target CMakeFiles/stegano.dir
 
 # All Build rule for target.
-CMakeFiles/steno.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/steno.dir/build.make CMakeFiles/steno.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/steno.dir/build.make CMakeFiles/steno.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/eric/Documents/steno/Stenographie/Release/CMakeFiles --progress-num=1,2 "Built target steno"
-.PHONY : CMakeFiles/steno.dir/all
+CMakeFiles/stegano.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stegano.dir/build.make CMakeFiles/stegano.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stegano.dir/build.make CMakeFiles/stegano.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/eric/Documents/steno/Steganographie/Release/CMakeFiles --progress-num=1,2 "Built target stegano"
+.PHONY : CMakeFiles/stegano.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/steno.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/eric/Documents/steno/Stenographie/Release/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/steno.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/eric/Documents/steno/Stenographie/Release/CMakeFiles 0
-.PHONY : CMakeFiles/steno.dir/rule
+CMakeFiles/stegano.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/eric/Documents/steno/Steganographie/Release/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/stegano.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/eric/Documents/steno/Steganographie/Release/CMakeFiles 0
+.PHONY : CMakeFiles/stegano.dir/rule
 
 # Convenience name for target.
-steno: CMakeFiles/steno.dir/rule
-.PHONY : steno
+stegano: CMakeFiles/stegano.dir/rule
+.PHONY : stegano
 
 # clean rule for target.
-CMakeFiles/steno.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/steno.dir/build.make CMakeFiles/steno.dir/clean
-.PHONY : CMakeFiles/steno.dir/clean
+CMakeFiles/stegano.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/stegano.dir/build.make CMakeFiles/stegano.dir/clean
+.PHONY : CMakeFiles/stegano.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
