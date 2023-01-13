@@ -2,8 +2,11 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-int main(void)
+//main program
+int main(int argc,char **argv)
 {
-    //aaaaaa
+    //aaaaaaa
+    return 0;
 }
