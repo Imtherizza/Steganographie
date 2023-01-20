@@ -9,14 +9,17 @@ int main(int argc,char **argv)
   bwimage_t *image;
   error_e retval=E3A_OK;
 
+  FILE *t_image;
+  t_image = fopen("../pnghex.txt","wt");
+
   image=E3ACreateImage();
 
   do
   {
-    unsigned int i, j;//, tamer;
+    unsigned int i, j, cpt=0;//, tamer;
 
     if(E3A_OK != (retval=E3ALoadImage(argv[1], image))) break;
-    image_bs.data = malloc(sizeof(short)*image->width*image->height*3);
+    image_bs.data = malloc(sizeof(short)*image->width*image->height);
 
     /* Just to do something - create a negative */
     for(i=0; i<image->height; i++)
@@ -25,16 +28,20 @@ int main(int argc,char **argv)
       {
         image->data[i][j]=0xff-image->data[i][j];
         image_bs.data[i+j*image->width]=image->data[i][j];
-        //printf("%d\n",tamer);
-        //tamer++;
+        fprintf(t_image,"%x ",image_bs.data[i+j*image->width]);
+        cpt+=2;
       }
     }
+
+    image_bs.capacity=(sizeof(short)*image->width*image->height)/8;
 
     if(E3A_OK != (retval=E3ADumpImage("positive.png", image))) break;
 
     printf("%dx%d\n", image->width, image->height);
-    printf("%ld\n",sizeof(short)*256);
-  }
+    printf("%d\n",image_bs.capacity);
+    printf("%ld\n",sizeof(short)*image->width*image->height);
+    printf("%d\n",cpt);
+  }  
   while(0);
 
   switch(retval)
@@ -54,7 +61,8 @@ int main(int argc,char **argv)
       ;/* Can't happen */
   }
   E3AFreeImage(image);
-  //free(image_bs.data);
+  free(image_bs.data);
+  fclose(t_image);
 
   return 0;
 }

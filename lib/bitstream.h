@@ -14,7 +14,7 @@ typedef struct
 } 
 bitstream;
 
-/*
+
 bitstream* CreateEmptyBitstream();
 
 bitstream* CreateBitstreamOnData(char *data, unsigned int size);
@@ -26,6 +26,6 @@ void WriteBits(bitstream *b, char o, unsigned int nbbits);
 char ReadBits(bitstream *b, unsigned int nbbits);
 
 void FreeBitstream();
-*/
+
 
 #endif//__BITSTREAM_H__
