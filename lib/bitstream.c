@@ -52,11 +52,12 @@ void WriteBits(bitstream *b, char o, unsigned int nbbits)
 
 char ReadBits(bitstream *b, unsigned int nbbits)
 {
-    
+
 }
 
-void FreeBitstream()
+void FreeBitstream(bitstream *b)
 {
-
+    if (b->data)
+        free(b->data);
 }
 

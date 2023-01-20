@@ -28,7 +28,7 @@ int main(int argc,char **argv)
       {
         image->data[i][j]=0xff-image->data[i][j];
         image_bs.data[i+j*image->width]=image->data[i][j];
-        fprintf(t_image,"%x ",image_bs.data[i+j*image->width]);
+        fprintf(t_image,"%o ",image_bs.data[i+j*image->width]);
         cpt+=2;
       }
     }
