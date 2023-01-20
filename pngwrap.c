@@ -147,7 +147,8 @@ error_e E3AFreeImage(bwimage_t *image)
     return E3A_OK;
 }
 
-error_e E3ALoadImage(const char *infile_path, bwimage_t *image){
+error_e E3ALoadImage(const char *infile_path, bwimage_t *image)
+{
     int rv;
     // Load RGBA image first
     rgba_image_t *rgba=E3ACreateRGBAImage();

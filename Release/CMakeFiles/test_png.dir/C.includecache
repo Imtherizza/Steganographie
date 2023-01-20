@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngtest.c
+pngwrap.h
+/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.h
+stdio.h
+-
+
+/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.c
+stdio.h
+-
+stdlib.h
+-
+png.h
+-
+pngwrap.h
+/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.h
+
+/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.h
+
