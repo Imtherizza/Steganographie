@@ -8,7 +8,6 @@
 /*                                               RGBA Images                                         */
 /*****************************************************************************************************/
 
-
 rgba_image_t *E3ACreateRGBAImage()
 {
     rgba_image_t *retval = (rgba_image_t *)malloc(sizeof(rgba_image_t));
