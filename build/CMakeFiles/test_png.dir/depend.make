@@ -5,6 +5,7 @@ CMakeFiles/test_png.dir/lib/bitstream.c.o: ../lib/bitstream.c
 CMakeFiles/test_png.dir/lib/bitstream.c.o: ../lib/bitstream.h
 
 CMakeFiles/test_png.dir/pngtest.c.o: ../lib/bitstream.h
+CMakeFiles/test_png.dir/pngtest.c.o: ../lib/message.h
 CMakeFiles/test_png.dir/pngtest.c.o: ../pngtest.c
 CMakeFiles/test_png.dir/pngtest.c.o: ../pngwrap.h
 
