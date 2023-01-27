@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/test_png.dir/lib/bitstream.c.o"
   "CMakeFiles/test_png.dir/pngtest.c.o"
   "CMakeFiles/test_png.dir/pngwrap.c.o"
   "test_png"

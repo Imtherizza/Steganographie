@@ -123,6 +123,33 @@ test_png/fast:
 	$(MAKE) -f CMakeFiles/test_png.dir/build.make CMakeFiles/test_png.dir/build
 .PHONY : test_png/fast
 
+lib/bitstream.o: lib/bitstream.c.o
+
+.PHONY : lib/bitstream.o
+
+# target to build an object file
+lib/bitstream.c.o:
+	$(MAKE) -f CMakeFiles/test_png.dir/build.make CMakeFiles/test_png.dir/lib/bitstream.c.o
+.PHONY : lib/bitstream.c.o
+
+lib/bitstream.i: lib/bitstream.c.i
+
+.PHONY : lib/bitstream.i
+
+# target to preprocess a source file
+lib/bitstream.c.i:
+	$(MAKE) -f CMakeFiles/test_png.dir/build.make CMakeFiles/test_png.dir/lib/bitstream.c.i
+.PHONY : lib/bitstream.c.i
+
+lib/bitstream.s: lib/bitstream.c.s
+
+.PHONY : lib/bitstream.s
+
+# target to generate assembly for a file
+lib/bitstream.c.s:
+	$(MAKE) -f CMakeFiles/test_png.dir/build.make CMakeFiles/test_png.dir/lib/bitstream.c.s
+.PHONY : lib/bitstream.c.s
+
 pngtest.o: pngtest.c.o
 
 .PHONY : pngtest.o
@@ -186,6 +213,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... test_png"
+	@echo "... lib/bitstream.o"
+	@echo "... lib/bitstream.i"
+	@echo "... lib/bitstream.s"
 	@echo "... pngtest.o"
 	@echo "... pngtest.i"
 	@echo "... pngtest.s"

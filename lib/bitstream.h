@@ -1,6 +1,8 @@
 #ifndef __BITSTREAM_H__
 #define __BITSTREAM_H__
 
+//#include "../lib/bitstream.c"
+
 /*  Bitstream
  *
  *
@@ -14,10 +16,9 @@ typedef struct
 } 
 bitstream;
 
+bitstream* CreateEmptyBitstream(void);
 
-bitstream* CreateEmptyBitstream();
-
-bitstream* CreateBitstreamOnData(char *data, unsigned int size);
+bitstream* CreateBitstreamOnData(unsigned short *data, unsigned int size);
 
 void ResetPosition(bitstream *b);
 
