@@ -16,18 +16,25 @@ typedef struct
 } 
 bitstream;
 
+//fait
 bitstream* CreateEmptyBitstream(void);
 
+//presque fait
 bitstream* CreateBitstreamOnData(unsigned char *data, unsigned int size);
 
+//fait
 void ResetPosition(bitstream *b);
 
+//non
 void WriteBits(bitstream *b, unsigned char o, unsigned int nbbits);
 
-//void WriteBit(bitstream *b, unsigned char bit);
+//non
+void WriteBit(bitstream *b, unsigned char bit);
 
+//non
 char ReadBits(bitstream *b, unsigned int nbbits);
 
+//fait
 void FreeBitstream();
 
 

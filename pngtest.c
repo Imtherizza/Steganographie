@@ -1,8 +1,13 @@
 #include "pngwrap.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 #include "lib/bitstream.h"
 #include "lib/message.h"
+#include "lib/stegano.h"
+
+//not do this
+//
 
 int main(){
   bitstream *image_bs = CreateEmptyBitstream();
@@ -18,7 +23,7 @@ int main(){
   t_image2 = fopen("../pnghex2.txt","wt");
 
   image=E3ACreateImage();
-  
+
   //tests on a single black & white image, tests on a rgb image possible
   do{
     unsigned int i, j,cpt=0;
@@ -36,22 +41,24 @@ int main(){
       }
     }
 
-   
+    /* TEST : temporary stengano*/
+
+
+
     /* TEST : putting the entire image into the bitstream */
     image_bs = CreateBitstreamOnData(image_data,image_data_size);
-    image_bs->capacity=(sizeof(char)*image->width*image->height)/8;
     
-      //fprint of bitstream data 
+    //fprint of bitstream data 
     for(i=0; i<image->height; i++){
       for(j=0; j<image->width; j++){
         fprintf(t_image2,"%d ",image_bs->data[i+j*image->width]);
       }
     }
 
-
     if(E3A_OK != (retval=E3ADumpImage("positive.png", image))) break;
 
     /* Debugging print */
+    printf("pnghex size : %ld\n",sizeof(t_image));
     printf("size data: %d\n",image_data_size);
     printf("size image_bs : %d\n",image_bs->size);
     printf("image_bs capacity : %d\n", image_bs->capacity);
@@ -60,6 +67,11 @@ int main(){
   }
   while(0);
 
+  //int ccrc = CRC_calc(image_bs->data,image_data_size,13);
+  //printf("CRC : %d\n",ccrc);
+
+
+  /* Error status check*/
   switch(retval){
   case E3A_OK:
     break;

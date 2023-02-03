@@ -1,1 +1,0 @@
-/usr/bin/cc    CMakeFiles/test_png.dir/pngtest.c.o CMakeFiles/test_png.dir/pngwrap.c.o  -o test_png  /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib/x86_64-linux-gnu/libz.so 

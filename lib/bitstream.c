@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <png.h>
-#include "lib/bitstream.h"
+#include "bitstream.h"
 
 /*  Creates an empty bitstream with no data, ready to use
  *  @return The empty bistream
@@ -48,27 +48,26 @@ void ResetPosition(bitstream *b)
  */
 void WriteBits(bitstream *b, unsigned char o, unsigned int nbbits)
 {
-    for(int i=b->position;i<nbbits;i++)
+    const char m = 0x01;
+    for(int i=0;i<nbbits;i++)
     {
-        b->data[i]=o;
+        b->data[b->position] |= (o & m<<i)>>i;
+        b->position++;
     }
 }
+
+/*  Ignoring capacity for now
+ *
+ *
+ * 
+ */
 /*
 void WriteBit(bitstream *b, unsigned char bit)
 {
-    size_t bit_pos,cbt = b->position/8;
-    if(cbt>=b->size)
-    {
-        if(b->size>=b->capacity)
-        {
-           realloc(b->capacity,2*sizeof(b->capacity));
-        }
-        b->size+=1;
-    }
-    //masks
-    unsigned char mask1 = 0xFF |= (1<<7-bit_pos);
-    unsigned char mask2 = (bit_pos + 1)<<1-bit_pos;
-    b->posision+=1;
+    //const char mask = 0x01;
+    //b->data[i];
+    
+    b->position+=1;
 }*/
 
 /*  Read a single bit from the bistream 
@@ -78,7 +77,7 @@ void WriteBit(bitstream *b, unsigned char bit)
  */
 char ReadBits(bitstream *b, unsigned int nbbits)
 {
-    return b->data[b->position+nbbits];
+    return b->data[nbbits];
 }
 
 /*  Reset the bitstream 

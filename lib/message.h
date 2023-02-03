@@ -10,12 +10,16 @@ typedef struct{
     char *data;
 }message;
 
+//non en cours
 message* CreateFromFile(char *filename, FILE *file);
 
+//non
 unsigned int ComputeCRC(message* m);
 
+//non
 message* Reallocate(message *m);
 
+//fait
 void FreeMessage(message *m);
 
 
