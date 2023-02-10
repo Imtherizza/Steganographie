@@ -11,6 +11,7 @@
         "vector": "c",
         "string": "c",
         "system_error": "c",
-        "png.h": "c"
+        "png.h": "c",
+        "cstddef": "c"
     }
 }

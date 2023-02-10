@@ -5,40 +5,52 @@
 #include "bitstream.h"
 #include "lib/stegano.h"
 
-/*
-bitstream* message_to_new_bitstream(message* m)
+void STEG_extract_file(unsigned char* ex_data,unsigned char* filepath)
 {
-    unsigned int t_m_size = sizeof(int)*sizeof(m->size_of_data)+sizeof(char)*sizeof(m->size_of_filename);
-    unsigned char *t_data = malloc(t_m_size);
+    FILE* local_file;
+    local_file = fopen(filepath,"rw");
+    if(pfile==NULL) exit(0);
 
-    //data writing
-    unsigned int i=0;
-    while(i<)
+    unsigned char* pfile;
+    fseek(pfile,0L,SEEK_END);
+    size_t filesize = ftell(pfile);
+    ex_data = malloc(filesize);
+    fread(ex_data,filesize,1,local_file);
 
-    bitstream* t_b = CreateBitstreamOnData(unsigned char *t_data, unsigned int size);
+    fclose(local_file);
+    free(local_file);
 }
-*/
 
-int CRC_calc(char *bits,int length, int poly)
+int STEG_est_max_in_img(unsigned char* image_data,int datasize)
 {
-    int shiftRegister = 0xFFFFFFFF;  // Généralement tous les bits à 0 ou 1
-    for(int i=0;i<length;i++)
+    // Base capacity to increment later
+    int capacity = 0;
+
+    // 1 - base LSB check
+    capacity += datasize/8;
+
+    // more steps to add
+
+    // return
+    return capacity;
+}
+
+void STEG_write_bit(unsigned char* data,unsigned char byte);
+{
+    const unsigned char mask = 0x01;
+    for(int i=0;i<8;i++)
     {
-        if( MSB(shiftRegister)^bits[i]==1){
-            shiftRegister=(shiftRegister*2)^poly;
-        }else{
-            shiftRegister=(shiftRegister*2);
-        }
+        data[i] |= (byte>>i & mask);
     }
-    return shiftRegister;
 }
 
-int MSB(int n)
+void STEG_process(unsigned char* ex_data,bwimage_t* image)
 {
-    n |= n >> 2;
-    n |= n >> 4;
-    n |= n >> 8;
-    n |= n >> 16;
-    n = ((n + 1) >> 1)|(n & (1 << ((sizeof(n) * CHAR_BIT)-1)));
-    return n;
+    for(i=0; i<image->height; i++)
+    {
+      for(j=0; j<image->width; j++)
+      {
+        image->data[i][j] = ex_data[i+j*image->width];
+      }
+    }
 }

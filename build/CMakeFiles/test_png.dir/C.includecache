@@ -38,5 +38,15 @@ lib/message.h
 lib/stegano.h
 /home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/stegano.h
 
+/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.c
+stdio.h
+-
+stdlib.h
+-
+png.h
+-
+pngwrap.h
+/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.h
+
 /home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.h
 

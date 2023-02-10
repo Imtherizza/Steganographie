@@ -1,11 +1,12 @@
 #ifndef __STEGANO_H__
 #define __STEGANO_H__
 
-int CRC(char *bits,int length, int poly);
+void STEG_extract_file(unsigned char* ex_data,unsigned char* filepath);
 
-int MSB(int n);
+void STEG_est_max_in_img(unsigned char* image_data);
+
+void STEG_write_bit(unsigned char* data,unsigned char byte);
+
+void STEG_process(unsigned char* ex_data,bwimage_t* image);
 
 #endif//__STEGANO_H__
-
-
-
