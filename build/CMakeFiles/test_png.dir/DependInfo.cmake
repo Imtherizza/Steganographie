@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/bitstream.c" "/home/tp-home002/elouang/Documents/Stegano/Steganographie/build/CMakeFiles/test_png.dir/lib/bitstream.c.o"
+  "/home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/stegano.c" "/home/tp-home002/elouang/Documents/Stegano/Steganographie/build/CMakeFiles/test_png.dir/lib/stegano.c.o"
   "/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngtest.c" "/home/tp-home002/elouang/Documents/Stegano/Steganographie/build/CMakeFiles/test_png.dir/pngtest.c.o"
   "/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.c" "/home/tp-home002/elouang/Documents/Stegano/Steganographie/build/CMakeFiles/test_png.dir/pngwrap.c.o"
   )

@@ -6,47 +6,21 @@
 
 #IncludeRegexTransform: 
 
-/home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/bitstream.c
+/home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/stegano.c
 stdio.h
 -
 stdlib.h
 -
 png.h
 -
-bitstream.h
-/home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/bitstream.h
-
-/home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/bitstream.h
-
-/home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/message.h
-
+string.h
+-
+../pngwrap.h
+/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.h
+stegano.h
 /home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/stegano.h
 
-/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngtest.c
-pngwrap.h
-/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.h
-stdio.h
--
-stdlib.h
--
-limits.h
--
-lib/bitstream.h
-/home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/bitstream.h
-lib/message.h
-/home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/message.h
-lib/stegano.h
 /home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/stegano.h
-
-/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.c
-stdio.h
--
-stdlib.h
--
-png.h
--
-pngwrap.h
-/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.h
 
 /home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.h
 

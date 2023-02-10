@@ -83,31 +83,31 @@ CMakeFiles/test_png.dir/pngwrap.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/test_png.dir/pngwrap.c.s"
 	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.c -o CMakeFiles/test_png.dir/pngwrap.c.s
 
-CMakeFiles/test_png.dir/lib/bitstream.c.o: CMakeFiles/test_png.dir/flags.make
-CMakeFiles/test_png.dir/lib/bitstream.c.o: ../lib/bitstream.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tp-home002/elouang/Documents/Stegano/Steganographie/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/test_png.dir/lib/bitstream.c.o"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/test_png.dir/lib/bitstream.c.o   -c /home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/bitstream.c
+CMakeFiles/test_png.dir/lib/stegano.c.o: CMakeFiles/test_png.dir/flags.make
+CMakeFiles/test_png.dir/lib/stegano.c.o: ../lib/stegano.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tp-home002/elouang/Documents/Stegano/Steganographie/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/test_png.dir/lib/stegano.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/test_png.dir/lib/stegano.c.o   -c /home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/stegano.c
 
-CMakeFiles/test_png.dir/lib/bitstream.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/test_png.dir/lib/bitstream.c.i"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/bitstream.c > CMakeFiles/test_png.dir/lib/bitstream.c.i
+CMakeFiles/test_png.dir/lib/stegano.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/test_png.dir/lib/stegano.c.i"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/stegano.c > CMakeFiles/test_png.dir/lib/stegano.c.i
 
-CMakeFiles/test_png.dir/lib/bitstream.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/test_png.dir/lib/bitstream.c.s"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/bitstream.c -o CMakeFiles/test_png.dir/lib/bitstream.c.s
+CMakeFiles/test_png.dir/lib/stegano.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/test_png.dir/lib/stegano.c.s"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/stegano.c -o CMakeFiles/test_png.dir/lib/stegano.c.s
 
 # Object files for target test_png
 test_png_OBJECTS = \
 "CMakeFiles/test_png.dir/pngtest.c.o" \
 "CMakeFiles/test_png.dir/pngwrap.c.o" \
-"CMakeFiles/test_png.dir/lib/bitstream.c.o"
+"CMakeFiles/test_png.dir/lib/stegano.c.o"
 
 # External object files for target test_png
 test_png_EXTERNAL_OBJECTS =
 
 test_png: CMakeFiles/test_png.dir/pngtest.c.o
 test_png: CMakeFiles/test_png.dir/pngwrap.c.o
-test_png: CMakeFiles/test_png.dir/lib/bitstream.c.o
+test_png: CMakeFiles/test_png.dir/lib/stegano.c.o
 test_png: CMakeFiles/test_png.dir/build.make
 test_png: /usr/lib/x86_64-linux-gnu/libpng.so
 test_png: /usr/lib/x86_64-linux-gnu/libz.so

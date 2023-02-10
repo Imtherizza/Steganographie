@@ -12,6 +12,8 @@
         "string": "c",
         "system_error": "c",
         "png.h": "c",
-        "cstddef": "c"
+        "cstddef": "c",
+        "bitstream.h": "c",
+        "stegano.h": "c"
     }
 }
