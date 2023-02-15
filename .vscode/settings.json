@@ -1,3 +1,19 @@
 {
-    "cmake.configureOnOpen": true
+    "cmake.configureOnOpen": true,
+    "files.associations": {
+        "stdio.h": "c",
+        "stdlib.h": "c",
+        "array": "c",
+        "bitset": "c",
+        "string_view": "c",
+        "initializer_list": "c",
+        "utility": "c",
+        "vector": "c",
+        "string": "c",
+        "system_error": "c",
+        "png.h": "c",
+        "cstddef": "c",
+        "bitstream.h": "c",
+        "stegano.h": "c"
+    }
 }

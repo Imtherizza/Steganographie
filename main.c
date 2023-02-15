@@ -7,9 +7,13 @@
 //main program
 int main(int argc,char **argv)
 {
-    //main code
-    printf("Hello World!\n");
+    //open image
 
-    //end of main
+    //open and create message, bitstream conv
+
+    //write bits to image
+
+    //return image
+
     return 0;
 }

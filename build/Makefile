@@ -123,6 +123,33 @@ test_png/fast:
 	$(MAKE) -f CMakeFiles/test_png.dir/build.make CMakeFiles/test_png.dir/build
 .PHONY : test_png/fast
 
+lib/stegano.o: lib/stegano.c.o
+
+.PHONY : lib/stegano.o
+
+# target to build an object file
+lib/stegano.c.o:
+	$(MAKE) -f CMakeFiles/test_png.dir/build.make CMakeFiles/test_png.dir/lib/stegano.c.o
+.PHONY : lib/stegano.c.o
+
+lib/stegano.i: lib/stegano.c.i
+
+.PHONY : lib/stegano.i
+
+# target to preprocess a source file
+lib/stegano.c.i:
+	$(MAKE) -f CMakeFiles/test_png.dir/build.make CMakeFiles/test_png.dir/lib/stegano.c.i
+.PHONY : lib/stegano.c.i
+
+lib/stegano.s: lib/stegano.c.s
+
+.PHONY : lib/stegano.s
+
+# target to generate assembly for a file
+lib/stegano.c.s:
+	$(MAKE) -f CMakeFiles/test_png.dir/build.make CMakeFiles/test_png.dir/lib/stegano.c.s
+.PHONY : lib/stegano.c.s
+
 pngtest.o: pngtest.c.o
 
 .PHONY : pngtest.o
@@ -186,6 +213,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... test_png"
+	@echo "... lib/stegano.o"
+	@echo "... lib/stegano.i"
+	@echo "... lib/stegano.s"
 	@echo "... pngtest.o"
 	@echo "... pngtest.i"
 	@echo "... pngtest.s"

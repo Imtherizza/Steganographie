@@ -1,0 +1,6 @@
+build/
+pnghex*
+.vscode/
+*.png
+!lena.png
+*.old
