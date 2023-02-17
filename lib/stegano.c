@@ -9,7 +9,7 @@
 
 size_t STEG_extract_file(unsigned char* ex_data,unsigned char* filepath)
 {
-    printf("%s\n",filepath);
+    //printf("%s\n",filepath);
     FILE* local_file;
     local_file = fopen(filepath,"rw");
     if(!local_file) 
@@ -18,9 +18,10 @@ size_t STEG_extract_file(unsigned char* ex_data,unsigned char* filepath)
     }
     fseek(local_file,0L,SEEK_END);
     size_t filesize = ftell(local_file);
+    fseek(local_file,0L,SEEK_SET);
     ex_data = malloc(filesize);
-    STEG_header_creation(local_file,filepath,filesize);
-    fread(ex_data,filesize,1,local_file);
+    fread(ex_data,sizeof(char),filesize,local_file);
+    STEG_header_creation(ex_data,filepath,filesize);
     fclose(local_file);
     return filesize;
 }
@@ -35,7 +36,7 @@ void STEG_recreate_file(unsigned char* ex_data,unsigned char* filename,size_t fi
     }
     for(int i=0;i<filesize;i++)
     {
-        fprintf(local_file,ex_data[i]);
+        fprintf(local_file,(char)ex_data[i]);
     }
     fclose(local_file);
 }
@@ -45,12 +46,19 @@ void STEG_recreate_file(unsigned char* ex_data,unsigned char* filename,size_t fi
  */
 void STEG_header_creation(unsigned char* ex_data,unsigned char* filepath,size_t filesize)
 {
-    unsigned char* a_data = malloc(12*sizeof(char));
+    unsigned char* a_data = (unsigned char*)malloc(12*sizeof(unsigned char));
+    int pos = 12;
+    if(a_data == NULL)
+    {
+        printf("ca a pas marché :(\n");
+    }
+    //printf("szof : %ld\n\n",);
     size_t filename_size;
     unsigned int byte, crc, mask, a=0, j=0;
 
     // CRC 32
     crc = 0xFFFFFFFF;
+    /*
     while (ex_data[a] != 0) 
     {
         byte = ex_data[a]; // Get next byte.
@@ -62,50 +70,68 @@ void STEG_header_creation(unsigned char* ex_data,unsigned char* filepath,size_t 
         }
         a+=1;
     }
-    a_data[0]=(char)(crc & 0xFF);
-    a_data[1]=(char)((crc >> 8) & 0xFF);
-    a_data[2]=(char)((crc >> 16) & 0xFF);
-    a_data[3]=(char)((crc >> 24) & 0xFF);
+    */
+    a_data[0]=(char)((crc >> 24) & 0xFF);
+    a_data[1]=(char)((crc >> 16) & 0xFF);
+    a_data[2]=(char)((crc >> 8) & 0xFF);
+    a_data[3]=(char)((crc >> 0) & 0xFF);
 
     // filename for decode purposes
     // to replace with strrchr() in the future
-    for(int i=strlen(filepath);i>=0;i--)
+    
+    for(int i=sizeof(filepath);i>=0;i--)
     {
         if(filepath[i]=='/'||!i)
         {
-            filename_size = strlen(filepath-i)*sizeof(char);
-            a_data = realloc(a_data,sizeof(a_data)+8*sizeof(char));
-            a_data[j+1]=(char)((int)filename_size & 0xFF);
-            a_data[j+2]=(char)(((int)filename_size >> 8) & 0xFF);
-            a_data[j+3]=(char)(((int)filename_size >> 16) & 0xFF);
-            a_data[j+4]=(char)(((int)filename_size >> 24) & 0xFF);
+            filename_size = (strlen(filepath)*sizeof(char))-i-1;
+            a_data = realloc(a_data,12+filename_size);
+            //printf("%ld\n\n",sizeof(a_data));
+
+            a_data[4]=(char)(((int)filename_size >> 24) & 0xFF);
+            a_data[5]=(char)(((int)filename_size >> 16) & 0xFF);
+            a_data[6]=(char)(((int)filename_size >> 8) & 0xFF);
+            a_data[7]=(char)(((int)filename_size >> 0) & 0xFF);
 
             // size_t -> chars
-            a_data[j+5]=(char)((int)filesize & 0xFF);
-            a_data[j+6]=(char)(((int)filesize >> 8) & 0xFF);
-            a_data[j+7]=(char)(((int)filesize >> 16) & 0xFF);
-            a_data[j+8]=(char)(((int)filesize >> 24) & 0xFF);
+            a_data[8]=(char)(((int)filesize >> 24)& 0xFF);
+            a_data[9]=(char)(((int)filesize >> 16) & 0xFF);
+            a_data[10]=(char)(((int)filesize >> 8) & 0xFF);
+            a_data[11]=(char)(((int)filesize >> 0) & 0xFF);
 
-            for(j+=8;j<strlen(filepath)-i;j++)
+            for(int k=0;k<sizeof(filepath)-i+1;k++)
             {
-                a_data = realloc(a_data,sizeof(a_data)+sizeof(char));
-                a_data[j] = filepath[i+j+1];
+                //printf("szof : %d\n",strlen(a_data));
+                a_data[12+k] = filepath[i+k+1];
+                pos++;
             }
+            break;
         }
     }
+    //char* limit = strrchr(filepath,'/');
+    //printf("%d\n",pos);
+
+    a_data = realloc(a_data,filesize+pos);
+    for(int o=0;o<filesize;o++)
+    {
+        a_data[o+pos]=ex_data[o];
+    }
+    ex_data = realloc(ex_data,sizeof(a_data));
+    ex_data = a_data;
+    free(a_data);
+
 
     // print debug
     if(1)
     {
-        printf("%ld\n",filesize);
-        printf("%s\n",a_data);
+        for(int mdr=0;mdr<80;mdr++)
+        {
+            printf("%x\n",ex_data[mdr]);
+            if(mdr==11||mdr==18) printf("\n");
+        }
+
     }
-    
-    realloc(a_data,filesize+sizeof(a_data));
-    strcat(a_data,ex_data);
-    realloc(ex_data,sizeof(a_data));
-    ex_data = a_data;
-    free(a_data);
+
+
 }
 /*  Linear mode only
  *
@@ -133,6 +159,7 @@ int STEG_decode_data()
 
 /* Put 0 or 1 for color
  */
+
 unsigned int STEG_est_max_in_img(unsigned char* image_data,int datasize,int color)
 {
     // Base capacity to increment later
@@ -236,10 +263,10 @@ void STEG_write_bit_LSB(unsigned char* data,unsigned char byte,unsigned int* pos
 {
     for(int i=0;i<8;i++)
     {
-        data[i+(int)position] &= 0xFE;
-        data[i+(int)position] |= (byte>>i & 0xFE);
+        data[i+*position] &= 0xFE;
+        data[i+*position] |= (byte>>i & 0xFE);
     }
-    position+=8;
+    *position+=8;
 }
 
 void STEG_process_GRAY_linear(unsigned char* ex_data,bwimage_t* image)
