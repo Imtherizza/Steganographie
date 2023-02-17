@@ -26,6 +26,7 @@ int main(int argc, char** argv)
     if(E3A_OK != (retval=E3ALoadImage("../lena.png", image))) break;
 
     /* Test of file */
+    /*
     image_data = malloc(sizeof(char)*image->width*image->height);
     if(argv[1] != NULL)
     {
@@ -46,7 +47,7 @@ int main(int argc, char** argv)
     }
     STEG_process_GRAY_linear(image_data,image);
 
-    /* Just to do something - print in pnghex */
+    // Just to do something - print in pnghex 
     for(i=0; i<image->height; i++)
     {
       for(j=0; j<image->width; j++)
@@ -55,7 +56,7 @@ int main(int argc, char** argv)
       }
       fprintf(pfile,"\n");
     }
-
+    */
     if(E3A_OK != (retval=E3ADumpImage("negative.png", image))) break;
     printf("%dx%d\n", image->width, image->height);
   }
