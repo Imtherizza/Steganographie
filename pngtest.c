@@ -39,6 +39,15 @@ int main(int argc, char** argv)
         fprintf(pfile,"%x ",msg_data[i]);
       }
 
+      if(0)
+      {
+        for(int mdr=0;mdr<80;mdr++)
+        {
+            printf("%x\n",msg_data[mdr]);
+            if(0 && (mdr==11||mdr==18)) printf("\n");
+        }
+      }
+
       capacity = STEG_est_max_in_img(image_data,image->width*image->height,NO_COLOR);
       
       if(capacity>msg_size)

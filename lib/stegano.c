@@ -22,6 +22,17 @@ size_t STEG_extract_file(unsigned char* ex_data,unsigned char* filepath)
     ex_data = malloc(filesize);
     fread(ex_data,sizeof(char),filesize,local_file);
     STEG_header_creation(ex_data,filepath,filesize);
+
+    // print debug
+    if(1)
+    {
+        for(int mdr=0;mdr<80;mdr++)
+        {
+            printf("%x\n",ex_data[mdr]);
+            if(0 && (mdr==11||mdr==18)) printf("\n");
+        }
+    }
+
     fclose(local_file);
     return filesize;
 }
@@ -121,17 +132,14 @@ void STEG_header_creation(unsigned char* ex_data,unsigned char* filepath,size_t 
 
 
     // print debug
-    if(1)
+    if(0)
     {
         for(int mdr=0;mdr<80;mdr++)
         {
             printf("%x\n",ex_data[mdr]);
-            if(mdr==11||mdr==18) printf("\n");
+            if(0 && (mdr==11||mdr==18)) printf("\n");
         }
-
     }
-
-
 }
 /*  Linear mode only
  *
@@ -150,11 +158,34 @@ unsigned char* STEG_extract_data_LSB_BW(bwimage_t* image,unsigned char* bit_data
     }
 }
 
-int STEG_decode_data()
+int STEG_decode_data(unsigned char* in_data)
 {
+    int crc = 0, filename_size = 0,filesize = 0;
+    unsigned char* filename;
     // CRC
-    // NAME OF FILE
-    //
+    crc += in_data[0]<<0;
+    crc += in_data[1]<<8;
+    crc += in_data[2]<<16;
+    crc += in_data[3]<<24;
+
+    // FILENAME SIZE
+    filename_size += in_data[4]<<0;
+    filename_size += in_data[5]<<8;
+    filename_size += in_data[6]<<16;
+    filename_size += in_data[7]<<24;
+
+    // FILE SIZE
+    filename += in_data[4]<<0;
+    filename += in_data[5]<<8;
+    filename += in_data[6]<<16;
+    filename += in_data[7]<<24;
+
+    // FILENAME
+    filename = malloc(filename_size);
+    for(int i=0;i<filename_size;i++)
+    {
+        filename[i] = in_data[8+i];
+    }
 }
 
 /* Put 0 or 1 for color
