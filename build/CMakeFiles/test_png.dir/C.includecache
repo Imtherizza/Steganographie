@@ -6,20 +6,18 @@
 
 #IncludeRegexTransform: 
 
-/home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/stegano.c
+/home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/stegano.h
+
+/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngtest.c
+pngwrap.h
+/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.h
 stdio.h
 -
 stdlib.h
 -
-png.h
+limits.h
 -
-string.h
--
-../pngwrap.h
-/home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.h
-stegano.h
-/home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/stegano.h
-
+lib/stegano.h
 /home/tp-home002/elouang/Documents/Stegano/Steganographie/lib/stegano.h
 
 /home/tp-home002/elouang/Documents/Stegano/Steganographie/pngwrap.h

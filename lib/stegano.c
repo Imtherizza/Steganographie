@@ -11,30 +11,45 @@ size_t STEG_extract_file(unsigned char* ex_data,unsigned char* filepath)
 {
     //printf("%s\n",filepath);
     FILE* local_file;
+    unsigned char *hd_data,*f_data;
+    size_t hd_size,filesize;
     local_file = fopen(filepath,"rw");
     if(!local_file) 
     {
         exit(-1);
     }
     fseek(local_file,0L,SEEK_END);
-    size_t filesize = ftell(local_file);
+    filesize = ftell(local_file);
     fseek(local_file,0L,SEEK_SET);
-    ex_data = malloc(filesize);
-    fread(ex_data,sizeof(char),filesize,local_file);
-    STEG_header_creation(ex_data,filepath,filesize);
+    f_data = malloc(filesize);
+    fread(f_data,sizeof(char),filesize,local_file);
+    hd_size = STEG_header_size(filepath);
+    hd_data = malloc(hd_size);
+    STEG_header_creation(hd_data,filepath,filesize);
+    ex_data = malloc(filesize+hd_size);
 
-    // print debug
-    if(1)
+    for(int x = 0;x<filesize+hd_size;x++)
     {
-        for(int mdr=0;mdr<80;mdr++)
-        {
-            printf("%x\n",ex_data[mdr]);
-            if(0 && (mdr==11||mdr==18)) printf("\n");
-        }
+        if(x<hd_size)
+            ex_data[x] = hd_data[x];
+        else
+            ex_data[x] = f_data[x-hd_size];
     }
 
+    // print debug
+    if(0)
+    {
+        for(int mdr=0;mdr<hd_size+25;mdr++)
+        {
+            printf("%x\n",ex_data[mdr]);
+            if(mdr==hd_size-1) printf("\n");
+        }
+    }
+    //blubblub
+    printf("\n%d %d %d\n\n",filesize, hd_size, hd_size+filesize);
+
     fclose(local_file);
-    return filesize;
+    return filesize+hd_size;
 }
 
 void STEG_recreate_file(unsigned char* ex_data,unsigned char* filename,size_t filesize)
@@ -52,16 +67,30 @@ void STEG_recreate_file(unsigned char* ex_data,unsigned char* filename,size_t fi
     fclose(local_file);
 }
 
+size_t STEG_header_size(unsigned char* filepath)
+{
+    printf("\n%d\n\n",strlen(filepath));
+    int pos = 0;
+    for(int i=strlen(filepath);i>=0;i--)
+    {
+        if(filepath[i]=='/'||!i)
+        {
+            pos+=strlen(filepath)-i-1;
+            break;
+        }
+    }
+    return pos+12;
+}
+
 /* in order : CRC32,filname size,file size,filename...
  * cat this with the file to hide such as "strcat()""
  */
-void STEG_header_creation(unsigned char* ex_data,unsigned char* filepath,size_t filesize)
+size_t STEG_header_creation(unsigned char* ex_data,unsigned char* filepath,size_t filesize)
 {
-    unsigned char* a_data = (unsigned char*)malloc(12*sizeof(unsigned char));
     int pos = 12;
-    if(a_data == NULL)
+    if(ex_data == NULL)
     {
-        printf("ca a pas marché :(\n");
+        exit(-1);
     }
     //printf("szof : %ld\n\n",);
     size_t filename_size;
@@ -69,77 +98,42 @@ void STEG_header_creation(unsigned char* ex_data,unsigned char* filepath,size_t 
 
     // CRC 32
     crc = 0xFFFFFFFF;
-    /*
-    while (ex_data[a] != 0) 
-    {
-        byte = ex_data[a]; // Get next byte.
-        crc = crc ^ byte;
-        for (int b = 7; b >= 0; j--) 
-        {   // Do eight times.
-            mask = -(crc & 1);
-            crc = (crc >> 1) ^ (0xEDB88320 & mask);
-        }
-        a+=1;
-    }
-    */
-    a_data[0]=(char)((crc >> 24) & 0xFF);
-    a_data[1]=(char)((crc >> 16) & 0xFF);
-    a_data[2]=(char)((crc >> 8) & 0xFF);
-    a_data[3]=(char)((crc >> 0) & 0xFF);
+
+    ex_data[0]=(char)((crc >> 24) & 0xFF);
+    ex_data[1]=(char)((crc >> 16) & 0xFF);
+    ex_data[2]=(char)((crc >> 8) & 0xFF);
+    ex_data[3]=(char)((crc >> 0) & 0xFF);
 
     // filename for decode purposes
-    // to replace with strrchr() in the future
     
     for(int i=sizeof(filepath);i>=0;i--)
     {
         if(filepath[i]=='/'||!i)
         {
             filename_size = (strlen(filepath)*sizeof(char))-i-1;
-            a_data = realloc(a_data,12+filename_size);
             //printf("%ld\n\n",sizeof(a_data));
 
-            a_data[4]=(char)(((int)filename_size >> 24) & 0xFF);
-            a_data[5]=(char)(((int)filename_size >> 16) & 0xFF);
-            a_data[6]=(char)(((int)filename_size >> 8) & 0xFF);
-            a_data[7]=(char)(((int)filename_size >> 0) & 0xFF);
+            ex_data[4]=(char)(((int)filename_size >> 24) & 0xFF);
+            ex_data[5]=(char)(((int)filename_size >> 16) & 0xFF);
+            ex_data[6]=(char)(((int)filename_size >> 8) & 0xFF);
+            ex_data[7]=(char)(((int)filename_size >> 0) & 0xFF);
 
             // size_t -> chars
-            a_data[8]=(char)(((int)filesize >> 24)& 0xFF);
-            a_data[9]=(char)(((int)filesize >> 16) & 0xFF);
-            a_data[10]=(char)(((int)filesize >> 8) & 0xFF);
-            a_data[11]=(char)(((int)filesize >> 0) & 0xFF);
+            ex_data[8]=(char)(((int)filesize >> 24)& 0xFF);
+            ex_data[9]=(char)(((int)filesize >> 16) & 0xFF);
+            ex_data[10]=(char)(((int)filesize >> 8) & 0xFF);
+            ex_data[11]=(char)(((int)filesize >> 0) & 0xFF);
 
-            for(int k=0;k<sizeof(filepath)-i+1;k++)
+            for(int k=0;k<=sizeof(filepath)-i+1;k++)
             {
                 //printf("szof : %d\n",strlen(a_data));
-                a_data[12+k] = filepath[i+k+1];
+                ex_data[12+k] = filepath[i+k+1];
                 pos++;
             }
             break;
         }
     }
-    //char* limit = strrchr(filepath,'/');
-    //printf("%d\n",pos);
 
-    a_data = realloc(a_data,filesize+pos);
-    for(int o=0;o<filesize;o++)
-    {
-        a_data[o+pos]=ex_data[o];
-    }
-    ex_data = realloc(ex_data,sizeof(a_data));
-    ex_data = a_data;
-    free(a_data);
-
-
-    // print debug
-    if(0)
-    {
-        for(int mdr=0;mdr<80;mdr++)
-        {
-            printf("%x\n",ex_data[mdr]);
-            if(0 && (mdr==11||mdr==18)) printf("\n");
-        }
-    }
 }
 /*  Linear mode only
  *

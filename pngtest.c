@@ -34,17 +34,19 @@ int main(int argc, char** argv)
       msg_size = STEG_extract_file(msg_data,argv[1]);
 
       // Just to do something - print in pnghex 
-      for(i=0; i<msg_size; i++)
+      if(1)
       {
-        fprintf(pfile,"%x ",msg_data[i]);
-      }
-
-      if(0)
-      {
-        for(int mdr=0;mdr<80;mdr++)
+        for(i=0; i<msg_size; i++)
         {
-            printf("%x\n",msg_data[mdr]);
-            if(0 && (mdr==11||mdr==18)) printf("\n");
+          fprintf(pfile,"%x ",msg_data[i]);
+        }
+        // print debug
+        if(1)
+        {
+          for(int mdr=0;mdr<40;mdr++)
+          {
+              printf("%x\n",msg_data[mdr]);
+          }
         }
       }
 
@@ -52,12 +54,10 @@ int main(int argc, char** argv)
       
       if(capacity>msg_size)
       {
-        printf("\n%ld\n");
         while(position<capacity)
         {
           STEG_write_bit_LSB(image_data,msg_data[j],&position);
           j++;
-          //printf("%d %d %d\n",position, capacity, j);
         }
       }
       STEG_process_GRAY_linear(image_data,image);

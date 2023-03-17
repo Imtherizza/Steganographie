@@ -10,7 +10,9 @@ size_t STEG_extract_file(unsigned char* ex_data,unsigned char* filepath);
 
 unsigned int STEG_est_max_in_img(unsigned char* image_data,int datasize,int color);
 
-void STEG_header_creation(unsigned char* ex_data,unsigned char* filepath,size_t filesize);
+size_t STEG_header_creation(unsigned char* ex_data,unsigned char* filepath,size_t filesize);
+
+size_t STEG_header_size(unsigned char* filepath);
 
 void STEG_write_bit_LSB(unsigned char* data,unsigned char byte,unsigned int* position);
 
