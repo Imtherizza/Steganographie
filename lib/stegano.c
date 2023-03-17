@@ -286,10 +286,13 @@ void STEG_write_bits(unsigned char* data,unsigned char* bytes,unsigned int* s_ca
  */
 void STEG_write_bit_LSB(unsigned char* data,unsigned char byte,unsigned int* position)
 {
+
     for(int i=0;i<8;i++)
     {
+        printf("base data : %x\n",data[i+*position]);
         data[i+*position] &= 0xFE;
         data[i+*position] |= (byte>>i & 0xFE);
+        printf("new data : %x\n",data[i+*position]);
     }
     *position+=8;
 }

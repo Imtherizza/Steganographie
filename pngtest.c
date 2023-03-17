@@ -51,6 +51,7 @@ int main(int argc, char** argv)
       }
 
       capacity = STEG_est_max_in_img(image_data,image->width*image->height,NO_COLOR);
+      printf("\n%ld\n",capacity);
       
       if(capacity>msg_size)
       {
