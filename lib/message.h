@@ -1,7 +1,6 @@
 #ifndef __MESSAGE_H__
 #define __MESSAGE_H__
 
-
 typedef struct{
     unsigned int crc;
     unsigned char size_of_filename;

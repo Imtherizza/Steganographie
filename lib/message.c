@@ -28,7 +28,7 @@ message* CreateFromFile(const char *filepath)
 
     /* Filename */
     int i;
-        for(i=strlen(filepath);filepath[i]!='/';i--);
+    for(i=strlen(filepath);filepath[i]!='/';i--);
     m->size_of_filename = strlen(filepath)-i-1;
     m->filename = malloc(m->size_of_filename);
     char* strPath = malloc(strlen(filepath));
