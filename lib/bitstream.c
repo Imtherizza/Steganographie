@@ -41,34 +41,41 @@ void ResetPosition(bitstream *b)
     b->position = 0;
 }
 
-/*  Write bits into the bistream 
+/*  Write bits into the bistream data (8 to write) 
  *  @param bitstream
  *  @param char to write
  *  @param bit position 
  */
 void WriteBits(bitstream *b, unsigned char o, unsigned int nbbits)
 {
-    const char m = 0x01;
-    for(int i=0;i<nbbits;i++)
+    unsigned char mask;
+    /* bit writing*/
+    for(int i=0;i<8;i++)
     {
-        b->data[b->position] |= (o & m<<i)>>i;
-        b->position++;
+        if(0)
+        {
+            mask = 0xFE;
+        }
+        else
+        {
+            mask = 0xFC;
+        }
+
+        data[b->position] &= mask;
+        data[b->position] |= (byte>>i & mask);
+
+        if(0)
+        {
+            i+=2;
+        }
+        else
+        {
+            i+=1;
+        }
+
+        b->position+=1;
     }
 }
-
-/*  Ignoring capacity for now
- *
- *
- * 
- */
-/*
-void WriteBit(bitstream *b, unsigned char bit)
-{
-    //const char mask = 0x01;
-    //b->data[i];
-    
-    b->position+=1;
-}*/
 
 /*  Read a single bit from the bistream 
  *  @param bitstream

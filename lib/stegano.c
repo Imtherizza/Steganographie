@@ -1,17 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <png.h>
 #include <string.h>
-//#include "lib/message.h"
-//#include "lib/bitstream.h"
-#include "../pngwrap.h"
 #include "stegano.h"
+#include "message.h"
 
-size_t STEG_extract_file(unsigned char* ex_data,unsigned char* filepath)
+/* getting the size of the file to hide, useful for memory allocation
+*/
+size_t STEG_get_size(const char* filepath)
 {
-    //printf("%s\n",filepath);
-    FILE* local_file;
-    local_file = fopen(filepath,"rw");
+    FILE* local_file = fopen(filepath,"rb");
     if(!local_file) 
     {
         exit(-1);
@@ -19,313 +16,201 @@ size_t STEG_extract_file(unsigned char* ex_data,unsigned char* filepath)
     fseek(local_file,0L,SEEK_END);
     size_t filesize = ftell(local_file);
     fseek(local_file,0L,SEEK_SET);
-    ex_data = malloc(filesize);
-    fread(ex_data,sizeof(char),filesize,local_file);
-    STEG_header_creation(ex_data,filepath,filesize);
-
-    // print debug
-    if(1)
-    {
-        for(int mdr=0;mdr<80;mdr++)
-        {
-            printf("%x\n",ex_data[mdr]);
-            if(0 && (mdr==11||mdr==18)) printf("\n");
-        }
-    }
-
-    fclose(local_file);
     return filesize;
 }
 
-void STEG_recreate_file(unsigned char* ex_data,unsigned char* filename,size_t filesize)
+/* "message-less" method of extracting the data from a file
+ * also returns the size of the file
+ */
+size_t STEG_extract_file(unsigned char* ex_data)
 {
+    const char filepath[] = "../sun.png";
     FILE* local_file;
-    local_file = fopen(strcat("output/",filename),"rw");
+    local_file = fopen((const char*)filepath,"rb");
     if(!local_file) 
     {
         exit(-1);
     }
-    for(int i=0;i<filesize;i++)
-    {
-        fprintf(local_file,(char)ex_data[i]);
-    }
+    fseek(local_file,0L,SEEK_END);
+    size_t filesize = ftell(local_file);
+    fseek(local_file,0L,SEEK_SET);
+    fread(ex_data,sizeof(char),filesize,local_file);
     fclose(local_file);
+    return filesize;
 }
 
-/* in order : CRC32,filname size,file size,filename...
- * cat this with the file to hide such as "strcat()""
+/* Requires "message.h"
+ * extracts the message from a message structure and puts it into an array
  */
-void STEG_header_creation(unsigned char* ex_data,unsigned char* filepath,size_t filesize)
+void STEG_extract_message(char* ex_data,message* m)
 {
-    unsigned char* a_data = (unsigned char*)malloc(12*sizeof(unsigned char));
-    int pos = 12;
-    if(a_data == NULL)
-    {
-        printf("ca a pas marché :(\n");
-    }
-    //printf("szof : %ld\n\n",);
-    size_t filename_size;
-    unsigned int byte, crc, mask, a=0, j=0;
+    const int const2 = m->size_of_data+m->size_of_filename+12;
 
-    // CRC 32
-    crc = 0xFFFFFFFF;
-    /*
-    while (ex_data[a] != 0) 
-    {
-        byte = ex_data[a]; // Get next byte.
-        crc = crc ^ byte;
-        for (int b = 7; b >= 0; j--) 
-        {   // Do eight times.
-            mask = -(crc & 1);
-            crc = (crc >> 1) ^ (0xEDB88320 & mask);
-        }
-        a+=1;
-    }
-    */
-    a_data[0]=(char)((crc >> 24) & 0xFF);
-    a_data[1]=(char)((crc >> 16) & 0xFF);
-    a_data[2]=(char)((crc >> 8) & 0xFF);
-    a_data[3]=(char)((crc >> 0) & 0xFF);
-
-    // filename for decode purposes
-    // to replace with strrchr() in the future
-    
-    for(int i=sizeof(filepath);i>=0;i--)
-    {
-        if(filepath[i]=='/'||!i)
-        {
-            filename_size = (strlen(filepath)*sizeof(char))-i-1;
-            a_data = realloc(a_data,12+filename_size);
-            //printf("%ld\n\n",sizeof(a_data));
-
-            a_data[4]=(char)(((int)filename_size >> 24) & 0xFF);
-            a_data[5]=(char)(((int)filename_size >> 16) & 0xFF);
-            a_data[6]=(char)(((int)filename_size >> 8) & 0xFF);
-            a_data[7]=(char)(((int)filename_size >> 0) & 0xFF);
-
-            // size_t -> chars
-            a_data[8]=(char)(((int)filesize >> 24)& 0xFF);
-            a_data[9]=(char)(((int)filesize >> 16) & 0xFF);
-            a_data[10]=(char)(((int)filesize >> 8) & 0xFF);
-            a_data[11]=(char)(((int)filesize >> 0) & 0xFF);
-
-            for(int k=0;k<sizeof(filepath)-i+1;k++)
-            {
-                //printf("szof : %d\n",strlen(a_data));
-                a_data[12+k] = filepath[i+k+1];
-                pos++;
-            }
-            break;
-        }
-    }
-    //char* limit = strrchr(filepath,'/');
-    //printf("%d\n",pos);
-
-    a_data = realloc(a_data,filesize+pos);
-    for(int o=0;o<filesize;o++)
-    {
-        a_data[o+pos]=ex_data[o];
-    }
-    ex_data = realloc(ex_data,sizeof(a_data));
-    ex_data = a_data;
-    free(a_data);
-
-
-    // print debug
-    if(0)
-    {
-        for(int mdr=0;mdr<80;mdr++)
-        {
-            printf("%x\n",ex_data[mdr]);
-            if(0 && (mdr==11||mdr==18)) printf("\n");
-        }
-    }
-}
-/*  Linear mode only
- *
- */
-unsigned char* STEG_extract_data_LSB_BW(bwimage_t* image,unsigned char* bit_data)
-{
-    unsigned int pos = 0;
-    unsigned char* in_data;
-
-    // extracting the LSB of every pixel
-    //image_data = malloc((size_t)image->width*image->height);
-    //image_data = image->rawdata;
-    for(int i=0;i<(image->width*image->height);i++)
-    {
-        
-    }
-}
-
-int STEG_decode_data(unsigned char* in_data)
-{
-    int crc = 0, filename_size = 0,filesize = 0;
-    unsigned char* filename;
     // CRC
-    crc += in_data[0]<<0;
-    crc += in_data[1]<<8;
-    crc += in_data[2]<<16;
-    crc += in_data[3]<<24;
+    ex_data[0]=(char)((m->crc >> 24) & 0x000000FF);
+    ex_data[1]=(char)((m->crc >> 16) & 0x000000FF);
+    ex_data[2]=(char)((m->crc >> 8) & 0x000000FF);
+    ex_data[3]=(char)((m->crc >> 0) & 0x000000FF);
 
-    // FILENAME SIZE
-    filename_size += in_data[4]<<0;
-    filename_size += in_data[5]<<8;
-    filename_size += in_data[6]<<16;
-    filename_size += in_data[7]<<24;
+    // SOF
+    ex_data[4]=((m->size_of_filename >> 24) & 0xFF);
+    ex_data[5]=((m->size_of_filename >> 16) & 0xFF);
+    ex_data[6]=((m->size_of_filename >> 8) & 0xFF);
+    ex_data[7]=((m->size_of_filename >> 0) & 0xFF);
 
-    // FILE SIZE
-    filename += in_data[4]<<0;
-    filename += in_data[5]<<8;
-    filename += in_data[6]<<16;
-    filename += in_data[7]<<24;
+    // SOD
+    ex_data[8]=(char)((m->size_of_data >> 24) & 0xFF);
+    ex_data[9]=(char)((m->size_of_data >> 16) & 0xFF);
+    ex_data[10]=(char)((m->size_of_data >> 8) & 0xFF);
+    ex_data[11]=(char)((m->size_of_data >> 0) & 0xFF);
 
-    // FILENAME
-    filename = malloc(filename_size);
-    for(int i=0;i<filename_size;i++)
+    // instert string data, needs to be optimised (maybe with strcat? sprintf?, doesn't work for me)
+    for(int i=12;i<m->size_of_filename+12;i++)
     {
-        filename[i] = in_data[8+i];
+        ex_data[i]=m->filename[i-12] & 0x000000FF;
+    }
+    for(int i=12+m->size_of_filename;i<const2;i++)
+    {
+        ex_data[i]=m->data[i-(m->size_of_filename+12)] & 0x000000FF;
     }
 }
 
-/* Put 0 or 1 for color
+/* Check capacity
  */
-
-unsigned int STEG_est_max_in_img(unsigned char* image_data,int datasize,int color)
+int STEG_capacity(message *m,int imsize,int color)
 {
-    // Base capacity to increment later
     int capacity = 0;
+    // LSB check
+    capacity = imsize/8;
 
-    // 1 - base LSB check
-    capacity += datasize/8;
-
-    // more steps to add
-
-    // 2 - extreme color check
-
-    // 3 - heavy contrast check
-
-    // 4 - Color check
-    if(color==1)
+    // color check
+    if(color)
     {
-        capacity *= 3;
+        capacity*=3;
     }
-
-    // return
     return capacity;
 }
 
-/*  Checking the extremes
+/* Check if the image can be hidden inside the image
  */
-unsigned int* color_capacity(unsigned char* data)
+int STEG_compatibility(const int len,const int capacity)
 {
-
-}
-
-unsigned int* contrast_capacity(unsigned char* data)
-{
-
-}
-
-/*  WIP writer for all bits of the hidden message, linear
- */
-void STEG_write_bits(unsigned char* data,unsigned char* bytes,unsigned int* s_capacity,unsigned int image_size,unsigned int capacity)
-{
-    int i=0,j,pos,ret_offset;
-    unsigned char ret_bit = 0x00;
-
-    while(i<strlen(bytes))
+    if(len>capacity)
     {
-        for(j=0;j<8;j++)
-        {
-            if(ret_bit!=0)
-            {
-                ret_offset = 1;
-                data[j+pos] &= 0xFE;
-                data[j+pos] |= ret_bit;
-                // reset the ret_bit 
-                ret_bit = 0x00;
-            }
-            else
-            {
-                if(s_capacity[j])
-                {
-                    if(j<7)
-                    {
-                        data[j+pos] &= 0xFC;
-                        data[j+pos] |= (bytes[i]>>j-ret_offset & 0xFC);
-                        j++;
-                    }
-                    else if (j==7)
-                    {
-                        data[j+pos] &= 0xFE;
-                        data[j+pos] |= (bytes[i]>>j-ret_offset & 0xFE);
-                        j++;
-
-                        ret_bit = bytes[i]>>j & 0xFE;
-                    }
-                }
-                else
-                {
-                    data[j+pos] &= 0xFE;
-                    data[j+pos] |= (bytes[i]>>j-ret_offset & 0xFE);
-                }
-            }
-            if(j>=7)
-            {
-                ret_offset = 0x00;
-            }
-        }
-        
-        pos+=8;
-        i++;
-
-        if(ret_bit && i>=strlen(bytes))
-        {
-            data[pos+1] &= 0xFE;
-            data[pos+1] |= ret_bit;
-        }
+        return 0;
+    }
+    else if(len==capacity || len<capacity)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
     }
 }
 
-/*  Working writer for basic LSB hiding, needs to be included in a "for" loop
- */
-void STEG_write_bit_LSB(unsigned char* data,unsigned char byte,unsigned int* position)
+/* writing 8 bytes of the image from a byte, linear and LSB only
+*/
+void STEG_write_bits_lin(char* im_data,char ex_byte,int* pos)
 {
+    // 'i' is the offset value here
     for(int i=0;i<8;i++)
     {
-        data[i+*position] &= 0xFE;
-        data[i+*position] |= (byte>>i & 0xFE);
-    }
-    *position+=8;
-}
-
-void STEG_process_GRAY_linear(unsigned char* ex_data,bwimage_t* image)
-{
-    for(int i=0; i<image->height; i++)
-    {
-        for(int j=0; j<image->width; j++)
-        {
-            image->data[j][i] = ex_data[i+j*image->width];
-        }
+        // mask operation :
+        im_data[*pos] &= 0x000000FE;
+        im_data[*pos] |= (ex_byte >> i)&1;
+        (*pos)+=1;
     }
 }
 
-/*  Untested
+/* process with Mat class :
  */
-void STEG_process_RGB_linear(unsigned char* ex_data,rgba_image_t* image)
+void STEG_process(const char* im_data)
 {
-    int k=0;
-    for(int j=0; j<image->height; j++)
+
+}
+
+/*
+ */
+void STEG_LSB_capture_lin(const int img_size,const char* f_data,char* c_data)
+{
+    int pos = 0;
+    for(int i=0;i<img_size;i++)
     {
-        for(int i=0; i<image->width; i++)
+        c_data[i] = 0;
+        for(int u=0;u<8;u++)
         {
-            image->data[i][4*(j+0)] = ex_data[i+j*image->width+k];
-            k++;
-            image->data[i][4*(j+1)] = ex_data[i+j*image->width+k];
-            k++;
-            image->data[i][4*(j+2)] = ex_data[i+j*image->width+k];
-            k++;
+            c_data[i] += (f_data[pos] & 0x01) << u;
+            //if(i>8 && i<13)
+            //    printf("fd : %d\n",((f_data[pos] >> u) & 0x01));
+            pos++;
         }
     }
+}
+
+/*
+ */
+message* STEG_capture_decode(const char* in_data)
+{
+    int pos = 0;
+    message* m = malloc(sizeof(message));
+
+    unsigned int crc=0,sof=0,sod=0;
+
+    for(int a=0;a<4;a++)
+    {
+        //printf("crc%u = %u,",a,((int)(in_data[pos] & 0x000000FF))<<(a*8));
+        crc += ((int)(in_data[pos] & 0x000000FF))<<(a*8);
+        pos++;
+    }
+    for(int b=0;b<4;b++)
+    {
+        sof += (in_data[pos]);
+        pos++;
+    }
+    for(int c=0;c<4;c++)
+    {
+        sod += (int)(in_data[pos]);
+        pos++;
+    }
+
+    //
+    //printf("\ncrc : %u %u %u %u === crc : %d\n",in_data[0],in_data[1],in_data[2],in_data[3],crc);
+
+    m->filename = malloc(m->size_of_filename);
+    printf("lena : %d %zu\n",strlen(m->filename));
+    m->data = malloc(m->size_of_data);
+    printf("lenb : %d %zu\n",strlen(m->data));
+
+    // charred decode
+    for(int d=12000;d<12+sof;d++)
+    {
+        m->filename[d-12]=in_data[d];
+        pos++;
+    }
+    for(int e=12000+sof;e<12+sof+sod;e++)
+    {
+        m->filename[e-(12+sof)]=in_data[e];
+        pos++;
+    }
+
+    m->crc = crc;
+    m->size_of_filename = sof;
+    m->size_of_data = sod;
+    return m;
+}
+
+void STEG_write_from_decode(message* m)
+{
+
+}
+
+int STEG_power(int a, int b)
+{
+    if(!b) 
+        return 1;
+    int ret=1;
+    for(int i=0;i<b;i++)
+        ret*=a;
+    return ret;
 }

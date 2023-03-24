@@ -1,48 +1,71 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <png.h>
-#include "lib/message.h"
+#include <string.h>
+//#include <png.h>
+#include "message.h"
 
-message* CreateFromFile(char *filename, FILE *file);
+message* CreateFromFile(const char *filepath)
 {
-    const char t_s_filename = sizeof(filename)*sizeof(char);
-    const char f_format = ".png";
-    message* r_message = malloc(sizeof(message));
-    r_message->size_of_filename = t_s_filename;
-    r_message->filename = malloc(t_s_filename);
+    message* m = malloc(sizeof(message));
+    m->size_of_data = 0;
+    m->size_of_filename = 0;
 
-    //il doit y avoir un meilleur moyen pour ca quand meme
-    //data extract, png only rn
-    if(f_format==".png")
+    /* Extract file data */
+    FILE* file = fopen(filepath,"rb");
+    if(!file) 
     {
-        bwimage_t* t_image=E3ACreateImage();
-        r_message->size_of_data = malloc(sizeof(char)*image->height*image->width);
-        for(int i=0; i<t_image->height; i++){
-            for(int j=0; j<t_image->width; j++){
-                r_message->data[i+j*image->width]=image->data[i][j];
-            }
-        };
+        exit(-1);
     }
-    
-    r_message->crc = ComputeCRC(r_message);
+    fseek(file,0L,SEEK_END);
+    size_t filesize = ftell(file);
+    //fseek(file,0L,SEEK_SET);
+    rewind(file);
+    m->data = malloc(filesize);
+    m->size_of_data = filesize;
+    fread(m->data,sizeof(char),filesize,file);
+    /* CRC */
+    ComputeCRC(m);
 
+    /* Filename */
+    int i;
+        for(i=strlen(filepath);filepath[i]!='/';i--);
+    m->size_of_filename = strlen(filepath)-i-1;
+    m->filename = malloc(m->size_of_filename);
+    char* strPath = malloc(strlen(filepath));
+    strcpy(strPath,filepath);
+    char* strToken = strtok(strPath,"/");
+    while(strToken != 0) 
+    {
+        if(strlen(strToken)==7)
+        {
+            m->filename = strToken;
+        }
+        strToken = strtok(0,"/");
+    }
+    //printf("crc : %u\nsofn : %d\nsofi : %d\nfn : %s\n",m->crc, m->size_of_filename, m->size_of_data, m->filename);
+    fclose(file);
+    free(strToken);
+    free(strPath);
+
+    return m;
 }
 
 unsigned int ComputeCRC(message* m)
 {
-
+    // placeholder 
+    m->crc = 0xFFFFFFFF;
+    return 1;
 }
 
 message* Reallocate(message *m)
 {
-
+    return m;
 }
 
 void FreeMessage(message *m)
 {
-    if(m->filename)
-        free(m->filename);
-    if(m->data)
-        free(m->data);
+
+    //free(m->filename);
+    //free(m->data);
     free(m);
 }

@@ -31,36 +31,7 @@ int main(int argc, char** argv)
     image_data = malloc(sizeof(char)*image->width*image->height);
     if(argv[1] != NULL)
     {
-      msg_size = STEG_extract_file(msg_data,argv[1]);
-
-      // Just to do something - print in pnghex 
-      for(i=0; i<msg_size; i++)
-      {
-        fprintf(pfile,"%x ",msg_data[i]);
-      }
-
-      if(0)
-      {
-        for(int mdr=0;mdr<80;mdr++)
-        {
-            printf("%x\n",msg_data[mdr]);
-            if(0 && (mdr==11||mdr==18)) printf("\n");
-        }
-      }
-
-      capacity = STEG_est_max_in_img(image_data,image->width*image->height,NO_COLOR);
       
-      if(capacity>msg_size)
-      {
-        printf("\n%ld\n");
-        while(position<capacity)
-        {
-          STEG_write_bit_LSB(image_data,msg_data[j],&position);
-          j++;
-          //printf("%d %d %d\n",position, capacity, j);
-        }
-      }
-      STEG_process_GRAY_linear(image_data,image);
     }
 
     if(E3A_OK != (retval=E3ADumpImage("negative.png", image))) break;

@@ -11,7 +11,7 @@ typedef struct{
 }message;
 
 //non en cours
-message* CreateFromFile(char *filename, FILE *file);
+message* CreateFromFile(const char *filepath);
 
 //non
 unsigned int ComputeCRC(message* m);
@@ -21,6 +21,5 @@ message* Reallocate(message *m);
 
 //fait
 void FreeMessage(message *m);
-
 
 #endif//__MESSAGE_H__
