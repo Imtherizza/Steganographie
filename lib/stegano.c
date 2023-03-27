@@ -3,6 +3,7 @@
 #include <string.h>
 #include "stegano.h"
 #include "message.h"
+#include "neobitstream.h"
 
 /* getting the size of the file to hide, useful for memory allocation
 */
@@ -200,11 +201,7 @@ message* STEG_capture_decode(const char* in_data)
     return m;
 }
 
-void STEG_write_from_decode(message* m)
-{
-
-}
-
+//[JC] Permet de calculer un puissance entiere sans utiliser la fonction pow
 int STEG_power(int a, int b)
 {
     if(!b) 
@@ -213,4 +210,103 @@ int STEG_power(int a, int b)
     for(int i=0;i<b;i++)
         ret*=a;
     return ret;
+}
+
+//[JC]Transforme un message en bitstream
+bitstream* STEG_MessageToBitstream(message *m){
+    bitstream *b = CreateEmptyBitstream();
+
+    int size=4+1+4+4+m->size_of_data+m->size_of_filename;
+    b->data=malloc(size*sizeof(char));
+    b->size=size;//[JC] D'apres la structure de message.h => CRC = 4 octets, sof =1 octet etc... //Donc c'est en octet!!
+
+    for(int i=0;i<4;i++){ //Décompositon du CRC en octet
+        b->data[i]=(m->crc&(0xFF<<((3-i)*8)))>>((3-i)*8);
+    }
+    b->data[4]=m->size_of_filename; //Injection de l'octet directement
+    for(int i=0;i<4;i++){ //Decomposiotn de SizeOfData
+        b->data[i+5]=(m->size_of_data&(0xFF<<((3-i)*8)))>>((3-i)*8);
+    }
+    
+    for(int i=0;i<4;i++){//Decomposition de SizeOfOption
+        b->data[i+9]=(m->size_of_option&(0xFF<<((3-i)*8)))>>((3-i)*8);
+    }
+
+    for(int i=0;i<m->size_of_filename;i++){ //Decomposition de filename en octet
+         b->data[i+13]=m->filename[i];
+    }
+
+    for(int i=0;i<m->size_of_data;i++){ //Attention, ici size_of_date contient bien size_of_option car on a deja INJECTE option dans le nouveau data!
+        b->data[i+13+m->size_of_filename]=m->data[i];
+    }
+printf("\nDebug:Octet to Bitstream\n");
+printf("%d\n",b->data[0]);
+printf("%d\n",b->data[1]);
+printf("%d\n",b->data[2]);
+printf("%d\n",b->data[3]);
+
+printf("%d\n",b->data[4]);
+
+printf("%d\n",b->data[5]);
+printf("%d\n",b->data[6]);
+printf("%d\n",b->data[7]);
+printf("%d\n",b->data[8]);
+
+printf("%d\n",b->data[9]);
+printf("%d\n",b->data[10]);
+printf("%d\n",b->data[11]);
+printf("%d\n",b->data[12]);
+    return b;
+}
+
+//[JC] Rappel, on a un bitstream qui est sale qui contient toute l'image.
+message* STEG_BitstreamToMessage(bitstream *b){
+    message *m=malloc(sizeof(message));
+    m->crc=0;
+    m->size_of_filename=0;
+    m->size_of_data=0;
+    m->size_of_option=0;
+
+
+    //We extract the message part, we will ignore the theorical junk at the end
+    for (int i = 0; i < 4; i++)
+    {
+        m->crc+=(b->data[i])<<((3-i)*8);
+        b->position++;
+    }
+
+    m->size_of_filename=b->data[4];
+    b->position++;
+    
+    for (int i = 0; i < 4; i++)
+    {
+        m->size_of_data+=(b->data[i+5])<<(3-i)*8;
+        b->position++;
+    }
+
+    for(int i=0;i<4;i++){
+        m->size_of_option+=(b->data[i+9])<<(3-i)*8;
+        b->position++;
+    }
+
+    m->filename=malloc(m->size_of_filename);
+    for(int i=0;i<m->size_of_filename;i++){
+        m->filename[i]=b->data[b->position+i];
+    }
+    b->position+=m->size_of_filename;
+
+
+    char* options=malloc(m->size_of_option); //Options enable us to carry more data, maybe nested steganography :p
+    m->data=malloc(m->size_of_data);
+printf("%d\n",m->size_of_filename);
+    for(int i=0;i<m->size_of_data;i++){
+        if(i<m->size_of_option){
+            options[i]=b->data[b->position+i];
+        }else{
+            m->data[i-m->size_of_option]=b->data[i+b->position];
+        }
+    }
+
+    b->position+=m->size_of_data;
+    return m;    
 }

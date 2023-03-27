@@ -2,6 +2,7 @@
 #define __STEGANO_H__
 
 #include "message.h"
+#include "neobitstream.h"
 
 size_t STEG_get_size(const char* filepath);
 size_t STEG_extract_file(unsigned char* ex_data);
@@ -14,5 +15,6 @@ void STEG_LSB_capture_lin(const int img_size,const char* f_data,char* c_data);
 message* STEG_capture_decode(const char* in_data);
 void STEG_write_from_decode(message* m);
 int STEG_power(int a, int b);
-
+bitstream* STEG_MessageToBitstream(message *m);
+message * STEG_BitstreamToMessage(bitstream *b);
 #endif//__STEGANO_H__

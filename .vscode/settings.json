@@ -14,6 +14,7 @@
         "png.h": "c",
         "cstddef": "c",
         "bitstream.h": "c",
-        "stegano.h": "c"
+        "stegano.h": "c",
+        "type_traits": "c"
     }
 }
