@@ -146,9 +146,7 @@ bitstream* ReadBitsLin(unsigned char*** image, unsigned int xmax, unsigned int y
         
         btemp2->size=xmax*ymax*3/8;
         btemp2->data=malloc(xmax*ymax*3/8);
-        printf("\n");
         while(btemp->position!=btemp->size){
-             if(btemp->position<=6*8)printf("%d\n",btemp->data[btemp->position]);
             btemp2->data[count]+=((btemp->data[btemp->position])<<(7-bitpos));
 
             btemp->position++;
@@ -179,27 +177,6 @@ bitstream* ReadBitsLin(unsigned char*** image, unsigned int xmax, unsigned int y
             }
         }
     }
-
-
-
-printf("\n");
-printf("%d\n",btemp2->data[0]);
-printf("%d\n",btemp2->data[1]);
-printf("%d\n",btemp2->data[2]);
-printf("%d\n",btemp2->data[3]);
-
-printf("%d\n",btemp2->data[4]);
-
-printf("%d\n",btemp2->data[5]);
-printf("%d\n",btemp2->data[6]);
-printf("%d\n",btemp2->data[7]);
-printf("%d\n",btemp2->data[8]);
-
-printf("%d\n",btemp2->data[9]);
-printf("%d\n",btemp2->data[10]);
-printf("%d\n",btemp2->data[11]);
-printf("%d\n",btemp2->data[12]);
-printf("\n");
     FreeBitstream(btemp);
 
     return btemp2;

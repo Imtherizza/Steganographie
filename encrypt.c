@@ -13,14 +13,6 @@
 #include "lib/color.h"
 
 
-//FONCTIONS
-void ConvertColorToSTEG_IMG(STEG_IMG *NewIMG,rgba_image_t *image);
-void ConvertBWToSTEG_IMG(STEG_IMG *NewIMG,bwimage_t *image);
-void ConvertBackRGBAToPNG(STEG_IMG *EditedIMG,rgba_image_t *image);
-void ConvertBackBWToPNG(STEG_IMG *EditedIMG,bwimage_t *image);
-char* CreateOptionData(char* key,int message_size,int imgx,int imgy);
-
-
 int main(int argc,char **argv)
 {
     /*
@@ -123,11 +115,7 @@ int main(int argc,char **argv)
         }else{
             HiddenFile->size_of_option=0;
         }
-printf("Debug Brute\n");
-printf("%d\n",HiddenFile->crc);
-printf("%d\n",HiddenFile->size_of_filename);
-printf("%d\n",HiddenFile->size_of_data);
-printf("%d\n",HiddenFile->size_of_option);
+
         bitstream* message = STEG_MessageToBitstream(HiddenFile);
 
         if(message->size*8 > ConvertedIMG->xmax*ConvertedIMG->ymax){
@@ -224,61 +212,4 @@ printf("%d\n",HiddenFile->size_of_option);
 
     }
     return 0;
-}
-
-
-void ConvertColorToSTEG_IMG(STEG_IMG *NewIMG,rgba_image_t *image){
-    NewIMG->xmax=image->width;
-    NewIMG->ymax=image->height;
-    NewIMG->RGB=ConvertToRGB(image->data,image->width,image->height,1);
-}
-
-void ConvertBWToSTEG_IMG(STEG_IMG *NewIMG,bwimage_t *image){
-    STEG_IMG *artifice=malloc(sizeof(STEG_IMG));
-    NewIMG->xmax=image->width;
-    NewIMG->ymax=image->height;
-    NewIMG->RGB=ConvertToRGB(image->data,image->width,image->height,0);
-}
-
-void ConvertBackRGBAToPNG(STEG_IMG *EditedIMG,rgba_image_t *image){
-    image->data=ReconvertToPNG(EditedIMG->RGB,image->width,image->height,1);
-}
-
-void ConvertBackBWToPNG(STEG_IMG *EditedIMG,bwimage_t *image){
-    image->data=ReconvertToPNG(EditedIMG->RGB,image->width,image->height,0);
-}
-
-//Créer la matrice de position pixel sous forme d'un vecteur
-char* CreateOptionData(char* key,int message_size,int imgx,int imgy){
-    int seed=0;
-    int count=0;
-    while (key[count]!='\0'){
-        seed+=key[count];
-        count++;
-    }
-    
-    
-    srand(seed); //Init le random gen.
-    char *ret=malloc(imgx*imgy*sizeof(char));
-    for(int i=0;i<imgx;i++){ //On init le tableau
-        for(int j=0;j<imgy;j++){
-            ret[i+j*imgx]=0;
-        }
-    }
-    int targetNumber=0;
-    int xrand=0;
-    int yrand=0;
-    while(targetNumber!=message_size){
-        xrand = rand()%imgx;
-        yrand = rand()%imgy;
-
-        if(ret[xrand+yrand*imgx]==0){
-            ret[xrand+yrand*imgx]=1;
-            targetNumber++;
-        }
-    }
-
-
-
-    return ret;
 }

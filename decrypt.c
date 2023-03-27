@@ -13,14 +13,6 @@
 #include "lib/color.h"
 
 
-//FONCTIONS
-void ConvertColorToSTEG_IMG(STEG_IMG *NewIMG,rgba_image_t *image);
-void ConvertBWToSTEG_IMG(STEG_IMG *NewIMG,bwimage_t *image);
-void ConvertBackRGBAToPNG(STEG_IMG *EditedIMG,rgba_image_t *image);
-void ConvertBackBWToPNG(STEG_IMG *EditedIMG,bwimage_t *image);
-char* CreateOptionData(char* key,int message_size,int imgx,int imgy);
-
-
 int main(int argc,char **argv)
 {
     /*
@@ -103,7 +95,11 @@ int main(int argc,char **argv)
         ConvertColorToSTEG_IMG(ConvertedIMG,image);
 
         bitstream *bitstreamOutput;
-        bitstreamOutput = ReadBitsLin(ConvertedIMG->RGB,ConvertedIMG->xmax,ConvertedIMG->ymax,1);
+        if(bNoOption){
+            bitstreamOutput = ReadBitsLin(ConvertedIMG->RGB,ConvertedIMG->xmax,ConvertedIMG->ymax,1);
+        }else{
+
+        }
 
         message *decryptedMessage;
         decryptedMessage = STEG_BitstreamToMessage(bitstreamOutput);
@@ -160,61 +156,4 @@ int main(int argc,char **argv)
 
     }
     return 0;
-}
-
-
-void ConvertColorToSTEG_IMG(STEG_IMG *NewIMG,rgba_image_t *image){
-    NewIMG->xmax=image->width;
-    NewIMG->ymax=image->height;
-    NewIMG->RGB=ConvertToRGB(image->data,image->width,image->height,1);
-}
-
-void ConvertBWToSTEG_IMG(STEG_IMG *NewIMG,bwimage_t *image){
-    STEG_IMG *artifice=malloc(sizeof(STEG_IMG));
-    NewIMG->xmax=image->width;
-    NewIMG->ymax=image->height;
-    NewIMG->RGB=ConvertToRGB(image->data,image->width,image->height,0);
-}
-
-void ConvertBackRGBAToPNG(STEG_IMG *EditedIMG,rgba_image_t *image){
-    image->data=ReconvertToPNG(EditedIMG->RGB,image->width,image->height,1);
-}
-
-void ConvertBackBWToPNG(STEG_IMG *EditedIMG,bwimage_t *image){
-    image->data=ReconvertToPNG(EditedIMG->RGB,image->width,image->height,0);
-}
-
-//Créer la matrice de position pixel sous forme d'un vecteur
-char* CreateOptionData(char* key,int message_size,int imgx,int imgy){
-    int seed=0;
-    int count=0;
-    while (key[count]!='\0'){
-        seed+=key[count];
-        count++;
-    }
-    
-    
-    srand(seed); //Init le random gen.
-    char *ret=malloc(imgx*imgy*sizeof(char));
-    for(int i=0;i<imgx;i++){ //On init le tableau
-        for(int j=0;j<imgy;j++){
-            ret[i+j*imgx]=0;
-        }
-    }
-    int targetNumber=0;
-    int xrand=0;
-    int yrand=0;
-    while(targetNumber!=message_size){
-        xrand = rand()%imgx;
-        yrand = rand()%imgy;
-
-        if(ret[xrand+yrand*imgx]==0){
-            ret[xrand+yrand*imgx]=1;
-            targetNumber++;
-        }
-    }
-
-
-
-    return ret;
 }
