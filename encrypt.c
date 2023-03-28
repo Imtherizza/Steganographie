@@ -14,13 +14,7 @@
 
 
 int main(int argc,char **argv)
-{
-    /*
-    for(int k=0;k<argc;k++){
-        printf("argc[%d] ; argv[%d]=%s \n",k,k,argv[k]);
-    }
-    printf("End Debug\n\n");*/
-    
+{   
     char input[32];
     char artifice[70];strcpy(artifice,  "../");
     char artifice2[70];strcpy(artifice2,  "../");
@@ -40,7 +34,6 @@ int main(int argc,char **argv)
                         exit(-1);
                     }
                     strcpy(input,argv[i*2+1]);
-                    //printf("%d %s \n",i,input);
                     if(!strcmp(input,"-file") || !strcmp(input, "-f") || !strcmp(input,"-F") || !strcmp(input,"-FILE") || !strcmp(input,"-File")){
                         FileNameStr = malloc(strlen(argv[i*2+2])+1);
                         strcpy(FileNameStr,argv[i*2+2]);
@@ -120,7 +113,7 @@ int main(int argc,char **argv)
 
         bitstream* message = STEG_MessageToBitstream(HiddenFile);
 
-        if(message->size*8 > ConvertedIMG->xmax*ConvertedIMG->ymax){
+        if(message->size*8 > ConvertedIMG->xmax*ConvertedIMG->ymax*3){
             printf("Image to hide is too big for the targeted file!\n");
             exit(-1);
         }
@@ -188,17 +181,11 @@ int main(int argc,char **argv)
             HiddenFile->size_of_option=0;
         }
 
-for(int i=0;i<16;i++)
-printf("Main::%d\n",HiddenFile->data[i]);
-
         bitstream* message = STEG_MessageToBitstream(HiddenFile);
         if(message->size*8 > ConvertedIMG->xmax*ConvertedIMG->ymax){
             printf("Image to hide is too big for the targeted file!\n");
             exit(-1);
         }
-
-for(int i=0;i<48;i++)
-printf("b::%d\n",message->data[i]);
 
         if(bNoOption){
             WriteDataLin(message,ConvertedIMG->RGB,ConvertedIMG->xmax,ConvertedIMG->ymax,0);

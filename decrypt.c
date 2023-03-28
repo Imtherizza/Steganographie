@@ -15,12 +15,6 @@
 
 int main(int argc,char **argv)
 {
-    /*
-    for(int k=0;k<argc;k++){
-        printf("argc[%d] ; argv[%d]=%s \n",k,k,argv[k]);
-    }
-    printf("End Debug\n\n");*/
-    
     char input[32];
     char artifice[70];strcpy(artifice,  "../");
     char artifice2[70];strcpy(artifice2,  ".png");
