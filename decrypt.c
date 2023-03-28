@@ -39,7 +39,6 @@ int main(int argc, char **argv)
                     exit(-1);
                 }
                 strcpy(input, argv[i * 2 + 1]);
-                // printf("%d %s \n",i,input);
                 if (!strcmp(input, "-file") || !strcmp(input, "-f") || !strcmp(input, "-F") || !strcmp(input, "-FILE") || !strcmp(input, "-File"))
                 {
                     FileNameStr = malloc(strlen(argv[i * 2 + 2]) + 1);
@@ -137,6 +136,7 @@ int main(int argc, char **argv)
 
         message *decryptedMessage;
         decryptedMessage = STEG_BitstreamToMessage(bitstreamOutput);
+
 
         DumpImageFromMessage(decryptedMessage);
 
