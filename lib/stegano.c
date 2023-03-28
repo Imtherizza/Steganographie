@@ -86,12 +86,12 @@ bitstream* STEG_MessageToBitstream(message *m){
 
 //[JC] Rappel, on a un bitstream qui est sale qui contient toute l'image.
 message* STEG_BitstreamToMessage(bitstream *b){
+
     message *m=malloc(sizeof(message));
     m->crc=0;
     m->size_of_filename=0;
     m->size_of_data=0;
     m->size_of_option=0;
-
 
     //We extract the message part, we will ignore the theorical junk at the end
     for (int i = 0; i < 4; i++)
@@ -101,11 +101,13 @@ message* STEG_BitstreamToMessage(bitstream *b){
     }
 
     m->size_of_filename=b->data[4];
+
     b->position++;
     
     for (int i = 0; i < 4; i++)
     {
         m->size_of_data+=(b->data[i+5])<<(3-i)*8;
+
         b->position++;
     }
 
@@ -121,6 +123,7 @@ message* STEG_BitstreamToMessage(bitstream *b){
     b->position+=m->size_of_filename;
 
 
+
     char* options=malloc(m->size_of_option); //Options enable us to carry more data, maybe nested steganography :p
     m->data=malloc(m->size_of_data);
 
@@ -130,7 +133,10 @@ message* STEG_BitstreamToMessage(bitstream *b){
         }else{
             m->data[i-m->size_of_option]=b->data[i+b->position];
         }
+
     }
+
+
 
     b->position+=m->size_of_data;
     return m;    
@@ -168,9 +174,10 @@ char* CreateOptionData(char* key,int message_size,int imgx,int imgy){
         count++;
     }
     
-    
+
     srand(seed); //Init le random gen.
-    char *ret=malloc(imgx*imgy*sizeof(char));
+    char *ret=malloc(imgx*imgy*sizeof(char)+1);
+
     for(int i=0;i<imgx;i++){ //On init le tableau
         for(int j=0;j<imgy;j++){
             ret[i+j*imgx]=0;
@@ -179,7 +186,7 @@ char* CreateOptionData(char* key,int message_size,int imgx,int imgy){
     int targetNumber=0;
     int xrand=0;
     int yrand=0;
-    while(targetNumber!=message_size){
+    while(targetNumber<message_size){
         xrand = rand()%imgx;
         yrand = rand()%imgy;
 
@@ -188,8 +195,8 @@ char* CreateOptionData(char* key,int message_size,int imgx,int imgy){
             targetNumber++;
         }
     }
+    ret[imgx*imgy]='\0';
 
-
-
+    
     return ret;
 }

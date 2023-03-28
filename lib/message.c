@@ -69,12 +69,12 @@ void InjectOptionIntoData(message *m,char* option){
     m->size_of_option = option_size;
 
     char* newdata = malloc(data_size+option_size);
-
+    printf("%d\n",option_size);
     for(int i=0;i<option_size;i++){ //[JC]On injecte d'abord le data provenant des options
         newdata[i]=option[i];
     }
     for(int i=data_size;i<data_size+option_size;i++){//[JC]Puis on injecte le data de l'image.
-        newdata[i]=m->data[i];
+        newdata[i]=m->data[i-data_size];
     }
 
     free(m->data); //On libere le bloc de l'ancienne données
@@ -88,8 +88,8 @@ void InjectOptionIntoData(message *m,char* option){
 
 void DumpImageFromMessage(message *m){
     FILE *fp;
-
-    fp = fopen(m->filename, "w+");
+    
+    fp = fopen(m->filename, "wb");
     
     if(fp == NULL)
     {

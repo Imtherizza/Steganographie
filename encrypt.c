@@ -93,7 +93,6 @@ int main(int argc,char **argv)
         rgba_image_t *image;//Open the targeted image.
         error_e imageretval=E3A_OK;
         image=E3ACreateRGBAImage();
-    
         //On charge l'image
         if(E3A_OK != (imageretval=E3ALoadRGBAImage(FileNameStr, image))){
             printf("Cannot open the targeted image!\n");
@@ -107,11 +106,14 @@ int main(int argc,char **argv)
         //On crée le message a partir du fichier qu'on veut cacher
         message* HiddenFile = CreateFromFile(HiddenNameStr);
 
-        char* optionData = CreateOptionData(EncryptionStyle,4+1+4+4+HiddenFile->size_of_filename+HiddenFile->size_of_data,image->width,image->height);
+        char* optionData = CreateOptionData(EncryptionStyle,(4+1+4+4+HiddenFile->size_of_filename+HiddenFile->size_of_data)*8,image->width,image->height);
+
         if(bNoOption==0){
             //On doit donc créer une matrice de booléan(de la taille d'une image) contenant HiddenFile->size fois UN.
-            InjectOptionIntoData(HiddenFile,optionData);
-            HiddenFile->size_of_option=strlen(optionData);
+            //InjectOptionIntoData(HiddenFile,optionData);
+            //HiddenFile->size_of_option=strlen(optionData);
+            printf("You used random data injection!\nHere's the data length:%d\n",(4+1+4+4+HiddenFile->size_of_filename+HiddenFile->size_of_data)*8);
+            HiddenFile->size_of_option=0;
         }else{
             HiddenFile->size_of_option=0;
         }
@@ -172,20 +174,31 @@ int main(int argc,char **argv)
         message* HiddenFile = CreateFromFile(HiddenNameStr);
 
 
-        char* optionData = CreateOptionData(EncryptionStyle,4+1+4+4+HiddenFile->size_of_filename+HiddenFile->size_of_data,image->width,image->height);
+
+        char* optionData = CreateOptionData(EncryptionStyle,(4+1+4+4+HiddenFile->size_of_filename+HiddenFile->size_of_data)*8,image->width,image->height);
+
         if(bNoOption==0){
             //On doit donc créer une matrice de booléan(de la taille d'une image) contenant HiddenFile->size fois UN.
-            InjectOptionIntoData(HiddenFile,optionData);
-            HiddenFile->size_of_option=strlen(optionData);
+            //InjectOptionIntoData(HiddenFile,optionData);
+            //HiddenFile->size_of_option=strlen(optionData);
+            
+            printf("You used random data injection!\nHere's the data length:%d\n",(4+1+4+4+HiddenFile->size_of_filename+HiddenFile->size_of_data)*8);
+            HiddenFile->size_of_option=0;
         }else{
             HiddenFile->size_of_option=0;
         }
+
+for(int i=0;i<16;i++)
+printf("Main::%d\n",HiddenFile->data[i]);
 
         bitstream* message = STEG_MessageToBitstream(HiddenFile);
         if(message->size*8 > ConvertedIMG->xmax*ConvertedIMG->ymax){
             printf("Image to hide is too big for the targeted file!\n");
             exit(-1);
         }
+
+for(int i=0;i<48;i++)
+printf("b::%d\n",message->data[i]);
 
         if(bNoOption){
             WriteDataLin(message,ConvertedIMG->RGB,ConvertedIMG->xmax,ConvertedIMG->ymax,0);

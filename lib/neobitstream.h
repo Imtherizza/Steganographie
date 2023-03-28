@@ -21,8 +21,10 @@ void WriteDataLin(bitstream *b, unsigned char ***image,int xmax,int ymax, int is
 
 void WriteDataRand(bitstream *b, unsigned char ***image,int xmax,int ymax, int isColored, char *Option);
 
+
 //[JC]Lors du décodage, on peut lire la fichier caché comme un bitstream.
-bitstream* ReadBitsLin(unsigned char*** image, unsigned int xmax, unsigned int ymax, unsigned int isColored);
+bitstream* ReadBitsLin(unsigned char*** image, unsigned int xmax, unsigned int ymax, unsigned int isColored); 
+bitstream* ReadBitsRand(unsigned char*** image, unsigned int xmax, unsigned int ymax, unsigned int isColored, char* RandMatrix,int len);
 
 //fait
 void FreeBitstream();

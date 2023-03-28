@@ -103,10 +103,10 @@ void WriteDataRand(bitstream *b, unsigned char ***image,int xmax,int ymax, int i
                     unsigned char bit = ((b->data[b->position])&(0x01<<(7-bitpos)))>>(7-bitpos);
                     unsigned char otherbits = image[j][i][0]&0xFE;
                     image[j][i][0]=otherbits+bit;
-
                     bitpos++;
                     if(bitpos>=8){ //Tant qu'on a pas écrit l'octet en entier, on ne bouge pas!
                         bitpos=0;
+
                         b->position++;
                         if(b->position>=b->size){
                             return;
@@ -181,6 +181,78 @@ bitstream* ReadBitsLin(unsigned char*** image, unsigned int xmax, unsigned int y
 
     return btemp2;
 }
+
+
+
+bitstream* ReadBitsRand(unsigned char*** image, unsigned int xmax, unsigned int ymax, unsigned int isColored, char* Matrix,int len){
+    bitstream *btemp=CreateEmptyBitstream();
+    int bitpos=0;
+    int randptr=0;
+    int count=0;
+
+    bitstream *btemp2=CreateEmptyBitstream();//The aim is to compact to each 8 bits into 1 byte
+    if(isColored){
+        btemp->size=len*3;
+        btemp->data=malloc(len*3);//Théoriquement, on pourrait avoir un bitstream sur toute la plage de donné de l'image.
+
+        for(int i=0;i<xmax;i++){
+            for(int j=0;j<ymax;j++){
+                if(Matrix[i+j*xmax]==1){
+                    for(int k=0;k<3;k++){
+                        btemp->data[randptr]=image[j][i][k]&0x01;//We read all the channels except alpha.
+                        randptr++;
+                        //if(i==0 && j<=6*8)printf("%d\n",image[j][i][k]&0x01);
+
+                    }
+                }
+                
+            }
+        }
+        
+        btemp2->size=len*3/8;
+        btemp2->data=malloc(len*3/8);
+        while(btemp->position<btemp->size){
+            btemp2->data[count]+=((btemp->data[btemp->position])<<(7-bitpos));
+
+            btemp->position++;
+            bitpos++;
+            if(bitpos>=8){
+                bitpos=0;
+                count++;
+            }
+        }
+    }else{
+        btemp->size=len;
+        btemp->data=malloc(len);//Théoriquement, on pourrait avoir un bitstream sur toute la plage de donné de l'image.
+        for(int i=0;i<xmax;i++){
+            for(int j=0;j<ymax;j++){
+                if(Matrix[i+j*xmax]==1){
+                    btemp->data[randptr]=image[j][i][0]&0x01;//We use the red channel
+                    randptr++;
+                }
+            }
+        }
+        btemp2->size=len/8;
+        btemp2->data=malloc(len/8);
+
+        while( (btemp->position) < (btemp->size) ){
+            btemp2->data[count]+=((btemp->data[btemp->position])<<(7-bitpos));
+            btemp->position++;
+            bitpos++;
+
+
+
+            if(bitpos>=8){
+                bitpos=0;
+                count++;
+            }
+        }
+    }
+    FreeBitstream(btemp);
+
+    return btemp2;
+}
+
 
 /*  Reset the bitstream 
  *  @param bitstream to free
