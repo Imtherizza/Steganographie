@@ -19,7 +19,6 @@ message* CreateFromFile(const char *filepath)
     }
     fseek(file,0L,SEEK_END);
     size_t filesize = ftell(file);
-    //fseek(file,0L,SEEK_SET);
     rewind(file);
     m->data = malloc(filesize);
     m->size_of_data = filesize; //[JC] On get la taille du fichier, pour allouer.

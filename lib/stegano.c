@@ -123,7 +123,6 @@ message* STEG_BitstreamToMessage(bitstream *b){
     b->position+=m->size_of_filename;
 
 
-
     char* options=malloc(m->size_of_option); //Options enable us to carry more data, maybe nested steganography :p
     m->data=malloc(m->size_of_data);
 
@@ -135,9 +134,6 @@ message* STEG_BitstreamToMessage(bitstream *b){
         }
 
     }
-
-
-
     b->position+=m->size_of_data;
     return m;    
 }

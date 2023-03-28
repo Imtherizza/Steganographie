@@ -37,7 +37,6 @@ void WriteDataLin(bitstream *b, unsigned char ***image,int xmax,int ymax, int is
     if(isColored){
         for(int i=0;i<xmax;i++){
             for(int j=0;j<ymax;j++){ //Pour chaque pixels de l'image, donc 1 octet
-                //printf("%d:%d %d:%d %d:%d \n",i,xmax,j,ymax,b->position,b->size);
                 for(int k=0;k<3;k++){ //pas 4 car on veut pas ecrire sur le canal de translucense(alpha channel)
                     unsigned char bit = ((b->data[b->position])&(0x01<<(7-bitpos)))>>(7-bitpos);
                     unsigned char otherbits = image[j][i][k]&0xFE;
@@ -77,7 +76,6 @@ void WriteDataRand(bitstream *b, unsigned char ***image,int xmax,int ymax, int i
     if(isColored){
         for(int i=0;i<xmax;i++){
             for(int j=0;j<ymax;j++){ //Pour chaque pixels de l'image, donc 1 octet
-                //printf("%d:%d %d:%d %d:%d \n",i,xmax,j,ymax,b->position,b->size);
                 if(Option[i+j*xmax]==1){
                     for(int k=0;k<3;k++){ //pas 4 car on veut pas ecrire sur le canal de translucense(alpha channel)
                         unsigned char bit = (b->data[b->position]&(0x01<<(7-bitpos)))>>(7-bitpos);
@@ -139,7 +137,6 @@ bitstream* ReadBitsLin(unsigned char*** image, unsigned int xmax, unsigned int y
             for(int j=0;j<ymax;j++){
                 for(int k=0;k<3;k++){
                     btemp->data[k+j*3+i*3*ymax]=image[j][i][k]&0x01;//We read all the channels except alpha.
-                    //if(i==0 && j<=6*8)printf("%d\n",image[j][i][k]&0x01);
                 }
             }
         }
@@ -201,8 +198,6 @@ bitstream* ReadBitsRand(unsigned char*** image, unsigned int xmax, unsigned int 
                     for(int k=0;k<3;k++){
                         btemp->data[randptr]=image[j][i][k]&0x01;//We read all the channels except alpha.
                         randptr++;
-                        //if(i==0 && j<=6*8)printf("%d\n",image[j][i][k]&0x01);
-
                     }
                 }
                 
