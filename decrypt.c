@@ -65,9 +65,12 @@ int main(int argc, char **argv)
             printf("Missing an argument!\n");
             exit(-1);
         }
-    }else if(argc == 2 ){
+    }
+    else if (argc == 2)
+    {
         strcpy(input, argv[1]);
-        if (!strcmp(input, "-Help") || !strcmp(input, "-help") || !strcmp(input, "-HELP") || !strcmp(input, "-H") || !strcmp(input, "-h")){
+        if (!strcmp(input, "-Help") || !strcmp(input, "-help") || !strcmp(input, "-HELP") || !strcmp(input, "-H") || !strcmp(input, "-h"))
+        {
             printf("Command usage is as follow:\n");
             printf("-f PATHFILE : File name to decrypt if there is a message hidden.\n");
             printf("-c 0 or 1 : Are the files in black and white or is it in color ?\n");
@@ -75,7 +78,6 @@ int main(int argc, char **argv)
             printf("-l Length : To be used with random encryption. If not provided, the program cannot resolve where the data is hidden.\n");
             exit(0);
         }
-
     }
 
     if (FileNameStr == NULL)
