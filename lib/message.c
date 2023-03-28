@@ -15,6 +15,7 @@ message *CreateFromFile(const char *filepath)
     FILE *file = fopen(filepath, "rb");
     if (!file)
     {
+        printf("File to hide doesnt exist!\nAborting!\n");
         exit(-1);
     }
     fseek(file, 0L, SEEK_END);
