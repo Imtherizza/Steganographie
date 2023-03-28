@@ -235,5 +235,6 @@ int main(int argc, char **argv)
         free(FileNameStr);
         free(HiddenNameStr);
     }
+    printf("Operation was a success!\n");
     return 0;
 }

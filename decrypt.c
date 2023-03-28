@@ -179,5 +179,6 @@ int main(int argc, char **argv)
 
         free(FileNameStr);
     }
+    printf("Operation was a success!\n");
     return 0;
 }
